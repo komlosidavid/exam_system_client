@@ -4,16 +4,15 @@ import { CommonModule } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { MainComponent } from './main/main.component';
 import { SharedModule } from '../shared/shared.module';
-
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [
-    MainComponent
-  ],
+  declarations: [MainComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    SharedModule
-  ]
+    SharedModule,
+    HttpClientModule,
+  ],
 })
-export class DashboardModule { }
+export class DashboardModule {}
