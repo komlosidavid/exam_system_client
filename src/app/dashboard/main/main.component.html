@@ -8,7 +8,15 @@
         ></app-button>
       </div>
       <div class="w-full p-2 d-flex flex-column">
-        <app-test-card></app-test-card>
+        <div *ngIf="tests && tests.length > 0">
+          <app-test-card
+            *ngFor="let test of tests"
+            [test]="test"
+          ></app-test-card>
+        </div>
+        <span *ngIf="tests && tests.length == 0"
+          >There are no tests in your profile.</span
+        >
       </div>
     </div>
     <div class="w-50 p-2">Itt egy naptár lesz.</div>
