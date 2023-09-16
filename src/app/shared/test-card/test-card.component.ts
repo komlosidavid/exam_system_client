@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Test } from 'src/app/interfaces/testInterface';
 
 @Component({
   selector: 'app-test-card',
@@ -9,6 +10,9 @@ export class TestCardComponent {
   submenu_icon: string = 'fa-chevron-down';
   is_submenu_open: boolean = false;
   dropdown_open: boolean = false;
+
+  @Input()
+  test!: Test;
 
   openCollaboratorsSubmenu(): void {
     this.toggleSubmenuIcon();
