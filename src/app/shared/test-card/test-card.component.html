@@ -1,7 +1,7 @@
 <div class="card w-75 mx-auto">
   <div class="card-header d-flex justify-content-between align-items-center">
     <div>
-      Itt lesz a teszt neve
+      {{ test.subject }}
       <app-button
         [button_class_type]="'link'"
         [is_button_small]="true"
@@ -14,20 +14,29 @@
       <b><span>Creator: </span></b>
       <div class="d-flex gap-2 align-items-center">
         <i class="fa-solid fa-user" style="font-size: 15px"></i>
-        <span style="font-size: 15px">username</span>
+        <span style="font-size: 15px">{{ test.creator.fullname }}</span>
       </div>
     </div>
   </div>
   <div class="card-block">
-    <h4 *ngIf="is_submenu_open" class="mt-0 mb-2">Collaborators</h4>
-    <div *ngIf="is_submenu_open" class="w-full border rounded p-2 mb-3">
-      <div class="d-flex gap-3">
-        <div>
-          <i class="fa-solid fa-user"></i>
-          username
+    <div *ngIf="is_submenu_open">
+      <h4 class="mt-0 mb-2">Collaborators</h4>
+      <div
+        *ngIf="test && test.collaborators.length > 0"
+        class="w-full border rounded p-2 mb-3"
+      >
+        <div class="d-flex gap-3">
+          <div *ngFor="let collaborator of test.collaborators">
+            <i class="fa-solid fa-user me-2"></i>
+            {{ collaborator.fullname }}
+          </div>
         </div>
       </div>
+      <span *ngIf="test && test.collaborators.length == 0"
+        >There are no collaborators yet.</span
+      >
     </div>
+
     <div class="card-text">body</div>
   </div>
   <div class="card-footer">
