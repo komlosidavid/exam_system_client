@@ -1,0 +1,47 @@
+<div class="card w-75 mx-auto">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <div>
+      Itt lesz a teszt neve
+      <app-button
+        [button_class_type]="'link'"
+        [is_button_small]="true"
+        [btn_has_icon]="true"
+        [btn_icon_class]="'fa-solid ' + submenu_icon"
+        (click)="openCollaboratorsSubmenu()"
+      ></app-button>
+    </div>
+    <div class="d-flex gap-3 align-items-center">
+      <b><span>Creator: </span></b>
+      <div class="d-flex gap-2 align-items-center">
+        <i class="fa-solid fa-user" style="font-size: 15px"></i>
+        <span style="font-size: 15px">username</span>
+      </div>
+    </div>
+  </div>
+  <div class="card-block">
+    <h4 *ngIf="is_submenu_open" class="mt-0 mb-2">Collaborators</h4>
+    <div *ngIf="is_submenu_open" class="w-full border rounded p-2 mb-3">
+      <div class="d-flex gap-3">
+        <div>
+          <i class="fa-solid fa-user"></i>
+          username
+        </div>
+      </div>
+    </div>
+    <div class="card-text">body</div>
+  </div>
+  <div class="card-footer">
+    <div class="dropdown {{ dropdown_open ? 'open' : '' }}">
+      <app-button
+        [btn_has_icon]="true"
+        [btn_icon_class]="'fa-solid fa-gear'"
+        [is_button_link]="true"
+        (click)="toggleSettingsDropdown()"
+      ></app-button>
+      <div class="dropdown-menu">
+        <h4 class="dropdown-header">Settings</h4>
+        <div class="dropdown-item">Action</div>
+      </div>
+    </div>
+  </div>
+</div>

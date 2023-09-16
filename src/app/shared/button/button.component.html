@@ -1,0 +1,12 @@
+<button
+  type="{{ btn_type }}"
+  class="btn btn-{{ button_class_type }} {{
+    is_button_link ? 'btn-link' : ''
+  }} {{ is_button_small ? 'btn-sm' : '' }} {{
+    is_button_block ? 'btn-block' : ''
+  }}"
+  [disabled]="is_disabled"
+>
+  <i *ngIf="btn_has_icon" class="{{ btn_icon_class }}"></i>
+  {{ text }}
+</button>
