@@ -5,6 +5,8 @@ export interface Test {
     subject: string,
     creator: User,
     collaborators: Array<User>,
+    students: Array<User>,
+    finishedStudents: number,
     questions: Array<any>,
     creationDate: string
 }
