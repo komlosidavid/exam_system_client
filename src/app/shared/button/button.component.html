@@ -2,9 +2,11 @@
 <p-button
   label="{{ text }}"
   type="{{ btn_type }}"
-  styleClass="{{ button_class_type }}"
+  styleClass="{{ button_class_type }} {{
+    is_button_link ? 'p-button-link' : ''
+  }}"
   [disabled]="is_disabled"
-  icon="pi {{ btn_icon_class }}"
+  icon="{{ button_has_icon ? 'pi {{ btn_icon_class }}' : '' }}"
   pTooltip="{{ tooltip_text }}"
   (click)="menu_items && menu.toggle($event)"
 ></p-button>
