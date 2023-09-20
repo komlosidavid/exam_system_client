@@ -10,6 +10,8 @@ export class ButtonComponent {
   @Input()
   btn_type: string = 'button';
   @Input()
+  button_has_icon: boolean = false;
+  @Input()
   button_class_type!: string;
   @Input()
   is_disabled: boolean = false;
@@ -19,8 +21,6 @@ export class ButtonComponent {
   text!: string;
   @Input()
   is_button_small: boolean = false;
-  @Input()
-  is_button_block: boolean = false;
   @Input()
   btn_icon_class!: string;
   @Input()
