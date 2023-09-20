@@ -1,56 +1,62 @@
-<div class="card w-75 mx-auto">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <div>
-      {{ test.subject }}
-      <app-button
-        [button_class_type]="'link'"
-        [is_button_small]="true"
-        [btn_has_icon]="true"
-        [btn_icon_class]="'fa-solid ' + submenu_icon"
-        (click)="openCollaboratorsSubmenu()"
-      ></app-button>
-    </div>
-    <div class="d-flex gap-3 align-items-center">
-      <b><span>Creator: </span></b>
-      <div class="d-flex gap-2 align-items-center">
-        <i class="fa-solid fa-user" style="font-size: 15px"></i>
-        <span style="font-size: 15px">{{ test.creator.fullname }}</span>
+<p-panel>
+  <ng-template pTemplate="header">
+    <div class="flex justify-content-between">
+      <div class="flex gap-2 align-items-center">
+        <span class="font-semibold text-xl">{{ test.subject }}</span>
+        <app-button
+          [btn_icon_class]="'pi-users'"
+          [button_class_type]="'p-button-primary p-button-text'"
+          [tooltip_text]="'Contributors'"
+          (click)="toggleCollaboratorsSubmenu()"
+        ></app-button>
       </div>
     </div>
+  </ng-template>
+  <p-card
+    *ngIf="is_submenu_open"
+    pAnimate
+    enterClass="flip"
+    leaveClass="fadeoutleft"
+    class="animation-duration-1000 animation-ease-out"
+  >
+    <span *ngIf="test.collaborators.length == 0"
+      >There are no collaborators.</span
+    >
+    <div class="flex gap-3" *ngIf="test.collaborators.length > 0">
+      <div *ngFor="let collaborator of test.collaborators">
+        <p-avatar
+          label="{{ getCollaboratorInitials(collaborator) }}"
+          styleClass="mr-1"
+          shape="circle"
+          [style]="{ 'background-color': '#3b82f6ff', color: '#fff' }"
+        ></p-avatar>
+        {{ collaborator.fullname }}
+      </div>
+    </div>
+  </p-card>
+  <div class="flex flex-column gap-2 {{ is_submenu_open ? 'mt-5' : '' }}">
+    <span class="text-bold">Finished tests:</span>
+    <p-progressBar [value]="test && (1 * 100) / test.students.length"></p-progressBar>
   </div>
-  <div class="card-block">
-    <div *ngIf="is_submenu_open">
-      <h4 class="mt-0 mb-2">Collaborators</h4>
-      <div
-        *ngIf="test && test.collaborators.length > 0"
-        class="w-full border rounded p-2 mb-3"
-      >
-        <div class="d-flex gap-3">
-          <div *ngFor="let collaborator of test.collaborators">
-            <i class="fa-solid fa-user me-2"></i>
-            {{ collaborator.fullname }}
-          </div>
-        </div>
-      </div>
-      <span *ngIf="test && test.collaborators.length == 0"
-        >There are no collaborators yet.</span
-      >
-    </div>
 
-    <div class="card-text">body</div>
-  </div>
-  <div class="card-footer">
-    <div class="dropdown {{ dropdown_open ? 'open' : '' }}">
+  <ng-template pTemplate="footer">
+    <div class="flex justify-content-between">
       <app-button
-        [btn_has_icon]="true"
-        [btn_icon_class]="'fa-solid fa-gear'"
-        [is_button_link]="true"
-        (click)="toggleSettingsDropdown()"
+        [btn_icon_class]="'pi-cog'"
+        [button_class_type]="
+          'p-button-rounded p-button-secondary p-button-text'
+        "
+        [menu_items]="menu_items"
       ></app-button>
-      <div class="dropdown-menu">
-        <h4 class="dropdown-header">Settings</h4>
-        <div class="dropdown-item">Action</div>
+      <div>
+        <app-button
+          [btn_icon_class]="'pi-eye'"
+          [button_class_type]="
+            'p-button-rounded p-button-secondary p-button-text'
+          "
+          (click)="onHandleNavigateToTest(test)"
+        ></app-button>
       </div>
     </div>
-  </div>
-</div>
+  </ng-template>
+</p-panel>
