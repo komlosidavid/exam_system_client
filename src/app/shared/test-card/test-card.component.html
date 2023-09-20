@@ -1,6 +1,6 @@
 <p-panel>
   <ng-template pTemplate="header">
-    <div class="flex justify-content-between">
+    <div class="w-full flex align-items-center justify-content-between">
       <div class="flex gap-2 align-items-center">
         <span class="font-semibold text-xl">{{ test.subject }}</span>
         <app-button
@@ -9,6 +9,15 @@
           [tooltip_text]="'Contributors'"
           (click)="toggleCollaboratorsSubmenu()"
         ></app-button>
+      </div>
+      <div>
+        <p-avatar
+          label="{{ getCollaboratorInitials(test.creator) }}"
+          styleClass="mr-1"
+          shape="circle"
+          [style]="{ 'background-color': '#3b82f6ff', color: '#fff' }"
+        ></p-avatar>
+        {{ test.creator.fullname }}
       </div>
     </div>
   </ng-template>
@@ -36,7 +45,9 @@
   </p-card>
   <div class="flex flex-column gap-2 {{ is_submenu_open ? 'mt-5' : '' }}">
     <span class="text-bold">Finished tests:</span>
-    <p-progressBar [value]="test && (1 * 100) / test.students.length"></p-progressBar>
+    <p-progressBar
+      [value]="test && (1 * 100) / test.students.length"
+    ></p-progressBar>
   </div>
 
   <ng-template pTemplate="footer">
