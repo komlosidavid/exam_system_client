@@ -1,24 +1,51 @@
 <div class="p-4">
-  <div class="w-full d-flex justify-content-between gap-2">
-    <div class="w-50">
-      <div class="w-full mb-3 p-2 d-flex">
-        <app-button
-          [button_class_type]="'primary'"
-          [text]="'Create new test'"
-        ></app-button>
+  <div class="w-full flex justify-content-between gap-2">
+    <div class="w-6">
+      <div class="w-full">
+        <div class="w-9 mx-auto flex gap-2">
+          <app-button
+            [button_class_type]="'sm'"
+            [text]="'Create new test'"
+          ></app-button>
+        </div>
       </div>
-      <div class="w-full p-2 d-flex flex-column">
-        <div *ngIf="tests && tests.length > 0">
+      <div class="w-9 mx-auto mt-5">
+        <p-menubar [model]="menubarItems">
+          <ng-template pTemplate="end">
+            <input
+              type="search"
+              pInputText
+              placeholder="Search"
+              class="w-full"
+            />
+          </ng-template>
+        </p-menubar>
+      </div>
+      <div class="w-full">
+        <div class="w-9 mx-auto">
+          <p class="text-xl">{{ selectedFilter }}</p>
+        </div>
+        <div
+          class="w-9 mx-auto flex flex-column gap-3"
+          *ngIf="tests && tests.length > 0"
+        >
           <app-test-card
             *ngFor="let test of tests"
             [test]="test"
           ></app-test-card>
         </div>
-        <span *ngIf="tests && tests.length == 0"
-          >There are no tests in your profile.</span
-        >
+        <div class="w-full flex justify-content-center mt-5">
+          <app-button
+            [is_disabled]="isLast"
+            [text]="'Load more'"
+            (click)="loadMoreData()"
+          ></app-button>
+        </div>
+        <div class="" *ngIf="tests && tests.length == 0">dasd</div>
       </div>
     </div>
-    <div class="w-50 p-2">Itt egy naptár lesz.</div>
+    <div class="w-6 p-2">
+      <app-calendar></app-calendar>
+    </div>
   </div>
 </div>
