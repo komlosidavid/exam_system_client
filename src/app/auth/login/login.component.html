@@ -1,0 +1,20 @@
+<div class="login-wrapper">
+  <form class="login" [formGroup]="form" (ngSubmit)="onHandleAuthentication()">
+    <section class="title">
+      <h3 class="welcome">Sign in</h3>
+      Exam System
+    </section>
+    <div class="w-full mt-5 mb-3 p-2 flex flex-column align-items-center">
+      <span class="p-float-label mb-5">
+        <input pInputText id="username" autocompleteoff formControlName="username" />
+        <label htmlFor="username">Username</label>
+      </span>
+      <span class="p-float-label mb-3">
+        <p-password [feedback]="false" autocompleteoff formControlName="password"></p-password>
+        <label for="password">Password</label>
+      </span>
+      <p-toast></p-toast>
+      <app-button [btn_type]="'submit'" [text]="'Sign in'" [is_disabled]="form.invalid"></app-button>
+    </div>
+  </form>
+</div>
