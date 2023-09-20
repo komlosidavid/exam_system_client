@@ -13,6 +13,8 @@ import { CardModule } from 'primeng/card';
 import { AvatarModule } from 'primeng/avatar';
 import { AnimateModule } from 'primeng/animate';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { BadgeModule } from 'primeng/badge';
+import { TieredMenuModule } from 'primeng/tieredmenu';
 
 @NgModule({
   declarations: [NavComponent, ButtonComponent, TestCardComponent],
@@ -26,6 +28,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
     AvatarModule,
     AnimateModule,
     ProgressBarModule,
+    BadgeModule,
+    TieredMenuModule,
   ],
   exports: [NavComponent, ButtonComponent, TestCardComponent],
 })
