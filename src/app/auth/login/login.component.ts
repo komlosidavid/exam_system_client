@@ -9,6 +9,10 @@ import { AuthenticationRequest } from 'src/app/interfaces/authenticationRequest'
 import { AuthService } from '../auth.service';
 import { MessageService } from 'primeng/api';
 import { AuthenticationResponse } from 'src/app/interfaces/AuthenticationResponse';
+import { Store } from '@ngrx/store';
+import * as AuthActions from '../state/auth.actions';
+import { Router } from '@angular/router';
+import { SharedService } from 'src/app/shared/shared.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +26,10 @@ export class LoginComponent implements OnInit {
   constructor(
     private _fb: FormBuilder,
     private service: AuthService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private store: Store,
+    private router: Router,
+    private sharedService: SharedService
   ) {}
 
   ngOnInit(): void {
@@ -47,7 +54,19 @@ export class LoginComponent implements OnInit {
 
     this.service.onHandleAuthentication(payload).subscribe({
       next: (response: AuthenticationResponse) => {
+        // this.store.dispatch(
+        //   new AuthActions.Auth({
+        //     accessToken: response.accessToken,
+        //     refreshToken: response.refreshToken,
+        //   })
+        // );
+
         localStorage.setItem('accessToken', response.accessToken);
+        localStorage.setItem('refreshToken', response.refreshToken);
+        this.sharedService.setAuthenticationStatus(true);
+      },
+      complete: () => {
+        this.router.navigateByUrl('dashboard');
       },
       error: (response) => {
         this.messageService.add({
