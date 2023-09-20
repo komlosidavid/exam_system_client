@@ -6,12 +6,10 @@ import { SharedModule } from '../shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MenubarModule } from 'primeng/menubar';
 import { InputTextModule } from 'primeng/inputtext';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { CalendarComponent } from './calendar/calendar.component';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
-  declarations: [MainComponent, CalendarComponent],
+  declarations: [MainComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
@@ -19,10 +17,7 @@ import { CalendarComponent } from './calendar/calendar.component';
     HttpClientModule,
     MenubarModule,
     InputTextModule,
-    CalendarModule.forRoot({
-      provide: DateAdapter,
-      useFactory: adapterFactory,
-    }),
+    SkeletonModule,
   ],
 })
 export class DashboardModule {}
