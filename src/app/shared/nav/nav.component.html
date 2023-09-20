@@ -1,4 +1,43 @@
 <header
-  class="w-full"
-  style="height: 60px; background-color: black"
-></header>
+  class="w-full h-5rem px-5 flex align-items-center justify-content-between"
+>
+  <div>logo</div>
+  <div class="flex align-items-center gap-5">
+    <ul class="flex gap-4 text-sm" style="list-style-type: none">
+      <li>
+        <a routerLink="dashboard" style="text-decoration: none; color: #fff"
+          >Dashboard</a
+        >
+      </li>
+      <li>Messages</li>
+    </ul>
+  </div>
+  <div *ngIf="!isAuthenticated" class="flex gap-4 align-items-center">
+    <ul class="flex gap-4 text-sm" style="list-style-type: none">
+      <li>Register</li>
+    </ul>
+    <app-button
+      routerLink="auth"
+      [text]="'Login'"
+      [button_has_icon]="false"
+    ></app-button>
+  </div>
+  <div *ngIf="isAuthenticated" class="flex gap-5 align-items-center mr-5">
+    <i
+      class="pi pi-bell mr-3"
+      pBadge
+      value="{{ badgeValue }}"
+      style="font-size: 1.3rem"
+    ></i>
+    <!-- <app-button [button_has_icon]="true" [btn_icon_class]="'pi-user'" [is_button_link]="true" [text]="'username'"></app-button> -->
+    <div class="flex align-items-center gap-3">
+      <p-avatar
+        icon="pi pi-user"
+        [style]="{ 'background-color': '#2196f3' }"
+        size="normal"
+        shape="circle"
+      ></p-avatar>
+      <span class="font-semibold" style="font-size: 0.9rem">username</span>
+    </div>
+  </div>
+</header>
