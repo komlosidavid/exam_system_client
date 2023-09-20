@@ -15,6 +15,7 @@ export class MainComponent implements OnInit {
   tests!: Array<Test>;
   menubarItems!: MenuItem[] | undefined;
   selectedFilter: string = 'All';
+  isLoading: boolean = true;
 
   constructor(private service: DashboardService) {}
 
@@ -54,18 +55,22 @@ export class MainComponent implements OnInit {
   }
 
   private loadData(): void {
-    this.service.getAllTests(this.page, this.size).subscribe({
-      next: (response) => {
-        if (!this.tests) {
-          this.tests = response.content;
-        } else {
-          this.tests.push(response.content);
-        }
-        if (response.last) {
-          this.isLast = true;
-        }
-        console.log(response);
-      },
-    });
+    this.service
+      .getAllTests(this.page, this.size, this.selectedFilter.toUpperCase())
+      .subscribe({
+        next: (response) => {
+          if (!this.tests) {
+            this.tests = response.content;
+          } else {
+            this.tests.push(response.content);
+          }
+          if (response.last) {
+            this.isLast = true;
+          }
+        },
+        complete: () => {
+          this.isLoading = false;
+        },
+      });
   }
 }
