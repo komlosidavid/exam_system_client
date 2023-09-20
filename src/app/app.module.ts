@@ -7,6 +7,9 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthModule } from './auth/auth.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import {} from './auth/state/auth.reducer';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +20,7 @@ import { AuthModule } from './auth/auth.module';
     SharedModule,
     HttpClientModule,
     AuthModule,
+    StoreModule.forRoot({}),
   ],
   providers: [],
   bootstrap: [AppComponent],
