@@ -3,14 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'test/:id',
+    path: 'test',
     loadChildren: () =>
       import('./test/test.module').then((module) => module.TestModule),
   },
   {
     path: 'dashboard',
     loadChildren: () =>
-      import('./dashboard/dashboard.module').then((module) => module.DashboardModule),
+      import('./dashboard/dashboard.module').then(
+        (module) => module.DashboardModule
+      ),
   },
 ];
 
