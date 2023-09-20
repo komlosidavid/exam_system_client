@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-button',
@@ -21,7 +22,9 @@ export class ButtonComponent {
   @Input()
   is_button_block: boolean = false;
   @Input()
-  btn_has_icon: boolean = false;
-  @Input()
   btn_icon_class!: string;
+  @Input()
+  menu_items: MenuItem[] | undefined;
+  @Input()
+  tooltip_text!: string;
 }
