@@ -17,6 +17,8 @@ export class NavComponent implements OnInit {
     this.sharedService.isAuthenticated$.subscribe((status) => {
       this.isAuthenticated = status;
     });
+
+    //this.logout();
   }
 
   logout(): void {
