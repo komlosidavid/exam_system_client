@@ -2,5 +2,5 @@
 @import "primeng/resources/themes/lara-light-blue/theme.css";
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
-@import "node_modules/angular-calendar/css/angular-calendar.css";
 @import "node_modules/@clr/ui/clr-ui.min.css";
+@import "node_modules/angular-calendar/css/angular-calendar.css";
