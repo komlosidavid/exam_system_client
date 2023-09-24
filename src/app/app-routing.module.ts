@@ -14,6 +14,11 @@ const routes: Routes = [
         (module) => module.DashboardModule
       ),
   },
+  {
+    path: 'error',
+    loadChildren: () =>
+      import('./error/error.module').then((module) => module.ErrorModule),
+  },
 ];
 
 @NgModule({
