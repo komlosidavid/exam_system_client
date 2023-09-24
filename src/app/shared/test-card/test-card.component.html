@@ -4,9 +4,10 @@
       <div class="flex gap-2 align-items-center">
         <span class="font-semibold text-xl">{{ test.subject }}</span>
         <app-button
-          [btn_icon_class]="'pi-users'"
-          [button_class_type]="'p-button-primary p-button-text'"
-          [tooltip_text]="'Contributors'"
+          [button_has_icon]="true"
+          [btn_icon_class]="'pi pi-users'"
+          [button_class_type]="'p-button-secondary p-button-text'"
+          [tooltip_text]="'Collaborators'"
           (click)="toggleCollaboratorsSubmenu()"
         ></app-button>
       </div>
@@ -45,15 +46,14 @@
   </p-card>
   <div class="flex flex-column gap-2 {{ is_submenu_open ? 'mt-5' : '' }}">
     <span class="text-bold">Finished tests:</span>
-    <p-progressBar
-      [value]="test && (1 * 100) / test.students.length"
-    ></p-progressBar>
+    <p-progressBar [value]="(1 * 100) / test.students.length"></p-progressBar>
   </div>
 
   <ng-template pTemplate="footer">
     <div class="flex justify-content-between">
       <app-button
-        [btn_icon_class]="'pi-cog'"
+        [button_has_icon]="true"
+        [btn_icon_class]="'pi pi-cog'"
         [button_class_type]="
           'p-button-rounded p-button-secondary p-button-text'
         "
@@ -61,7 +61,8 @@
       ></app-button>
       <div>
         <app-button
-          [btn_icon_class]="'pi-eye'"
+          [button_has_icon]="true"
+          [btn_icon_class]="'pi pi-eye'"
           [button_class_type]="
             'p-button-rounded p-button-secondary p-button-text'
           "
