@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenService } from './token.service';
-import { Subscription, filter, interval, switchMap } from 'rxjs';
+import { Subscription, filter, interval, mergeMap, switchMap } from 'rxjs';
 import { AuthenticationResponse } from './interfaces/AuthenticationResponse';
 
 @Component({
@@ -11,8 +11,7 @@ import { AuthenticationResponse } from './interfaces/AuthenticationResponse';
 })
 export class AppComponent implements OnInit {
   accessToken: string | null = localStorage.getItem('accessToken');
-  refreshToken: string | null = localStorage.getItem('refreshToken');
-  private refreshTokenSubscription!: Subscription;
+  private timerSubscription: Subscription | undefined;
 
   constructor(private router: Router, private tokenService: TokenService) {}
 
@@ -23,33 +22,25 @@ export class AppComponent implements OnInit {
       this.router.navigateByUrl('dashboard');
     }
 
-    this.startTokenRefreshing();
-  }
-
-  startTokenRefreshing() {
-    this.stopTokenRefreshing();
-    this.refreshTokenSubscription = interval(1000)
+    interval(1000 * 60 * 5 - 10000)
       .pipe(
-        filter(() => !!localStorage.getItem('refreshItem')),
-        switchMap(() => this.tokenService.getAccessToken())
+        filter(() => localStorage.getItem('refreshToken') != null),
+        mergeMap(() =>
+          this.tokenService.getAccessToken(
+            localStorage.getItem('refreshToken')!
+          )
+        )
       )
       .subscribe({
         next: (response: AuthenticationResponse) => {
-          localStorage.setItem('accessToken', response.accessToken);
-          console.log('dad');
-        },
-        error: (response) => {
           console.log(response);
+          
+          localStorage.setItem('accessToken', response.accessToken);
         },
-        complete: () => {
-          console.log('Refresh token used!');
+        error: () => {
+          this.router.navigateByUrl('error');
         },
       });
   }
 
-  stopTokenRefreshing() {
-    if (this.refreshTokenSubscription) {
-      this.refreshTokenSubscription.unsubscribe();
-    }
-  }
 }
