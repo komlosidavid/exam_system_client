@@ -39,7 +39,10 @@
         </p-menubar>
       </div>
       <div class="w-full">
-        <div *ngIf="!isLoading" class="w-10 mx-auto">
+        <div
+          *ngIf="!isLoading && tests && tests.length > 0"
+          class="w-10 mx-auto"
+        >
           <p class="text-xl">{{ selectedFilter }}</p>
         </div>
         <div
@@ -52,16 +55,25 @@
             class="mt-3"
           ></app-test-card>
         </div>
-        <div class="w-full flex justify-content-center mt-5">
+        <div
+          *ngIf="!isLoading && tests && tests.length > 0"
+          class="w-full flex justify-content-center mt-5"
+        >
           <app-button
             [is_disabled]="isLast"
             [text]="'Load more'"
             (click)="loadMoreData()"
           ></app-button>
         </div>
-        <div class="" *ngIf="tests && tests.length == 0">dasd</div>
+        <div class="w-10 mx-auto" *ngIf="tests && tests.length == 0">
+          <p-card styleClass="flex justify-content-center"
+            >There are no available tests for you!</p-card
+          >
+        </div>
       </div>
     </div>
-    <div class="w-6 p-2"></div>
+    <div class="w-6 p-2">
+      <app-calendar></app-calendar>
+    </div>
   </div>
 </div>
