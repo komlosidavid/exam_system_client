@@ -14,7 +14,10 @@ export class TokenService {
 
   constructor(private http: HttpClient) {}
 
-  getAccessToken(): Observable<AuthenticationResponse> {
-    return this.http.post<AuthenticationResponse>(this.URL + 'refresh', null);
+  getAccessToken(refreshToken: string): Observable<AuthenticationResponse> {
+    return this.http.post<AuthenticationResponse>(
+      this.URL + 'refresh',
+      refreshToken
+    );
   }
 }
