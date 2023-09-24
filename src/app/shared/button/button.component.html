@@ -6,7 +6,7 @@
     is_button_link ? 'p-button-link' : ''
   }}"
   [disabled]="is_disabled"
-  icon="{{ button_has_icon ? 'pi {{ btn_icon_class }}' : '' }}"
+  icon="{{ button_has_icon ? btn_icon_class : '' }}"
   pTooltip="{{ tooltip_text }}"
   (click)="menu_items && menu.toggle($event)"
 ></p-button>
