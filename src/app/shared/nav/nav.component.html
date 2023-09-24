@@ -2,7 +2,7 @@
   class="w-full h-5rem px-5 flex align-items-center justify-content-between"
 >
   <div>logo</div>
-  <div class="flex align-items-center gap-5">
+  <div *ngIf="isAuthenticated" class="flex align-items-center gap-5">
     <ul class="flex gap-4 text-sm" style="list-style-type: none">
       <li>
         <a routerLink="dashboard" style="text-decoration: none; color: #fff"
@@ -11,16 +11,6 @@
       </li>
       <li>Messages</li>
     </ul>
-  </div>
-  <div *ngIf="!isAuthenticated" class="flex gap-4 align-items-center">
-    <ul class="flex gap-4 text-sm" style="list-style-type: none">
-      <li>Register</li>
-    </ul>
-    <app-button
-      routerLink="auth"
-      [text]="'Login'"
-      [button_has_icon]="false"
-    ></app-button>
   </div>
   <div *ngIf="isAuthenticated" class="flex gap-5 align-items-center mr-5">
     <i
