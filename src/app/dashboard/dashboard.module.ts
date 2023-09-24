@@ -7,9 +7,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { MenubarModule } from 'primeng/menubar';
 import { InputTextModule } from 'primeng/inputtext';
 import { SkeletonModule } from 'primeng/skeleton';
+import { CardModule } from 'primeng/card';
+import { CalendarComponent } from './calendar/calendar.component';
 
 @NgModule({
-  declarations: [MainComponent],
+  declarations: [MainComponent, CalendarComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
@@ -18,6 +20,7 @@ import { SkeletonModule } from 'primeng/skeleton';
     MenubarModule,
     InputTextModule,
     SkeletonModule,
+    CardModule,
   ],
 })
 export class DashboardModule {}
