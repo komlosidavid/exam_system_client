@@ -1,0 +1,61 @@
+<form [formGroup]="answerGroup">
+  <div class="my-3 flex gap-2 align-items-center">
+    <p-radioButton
+      *ngIf="answerGroup.get('type')?.value == 'one_answer'"
+      formControlName="answerSelect"
+    ></p-radioButton>
+    <p-checkbox
+      *ngIf="answerGroup.get('type')?.value == 'multiple_answers'"
+      formControlName="answerSelect"
+    ></p-checkbox>
+    <input
+      *ngIf="
+        answerGroup.get('type')?.value == 'one_answer' ||
+        answerGroup.get('type')?.value == 'multiple_answers'
+      "
+      type="text"
+      class="w-4"
+      pInputText
+      maxlength="255"
+      formControlName="answer"
+    />
+    <div
+      class="w-full flex flex-wrap gap-3"
+      *ngIf="answerGroup.get('type')?.value == 'explanatory_answer'"
+    >
+      <textarea
+        class="w-full resize-none"
+        pInputTextarea
+        rows="10"
+        formControlName="answer"
+      ></textarea>
+      <div class="flex gap-3 align-items-center">
+        Max characters:
+        <p-inputNumber inputId="integeronly" [maxlength]="3"></p-inputNumber>
+      </div>
+    </div>
+
+    <i
+      *ngIf="
+        answerGroup.get('type')?.value == 'one_answer' ||
+        answerGroup.get('type')?.value == 'multiple_answers'
+      "
+      class="pi pi-check cursor-pointer"
+      [class.checked]="answerGroup.get('isCorrect')?.value"
+      [style]="
+        answerGroup.get('isCorrect')?.value
+          ? 'color: green; font-size: 1.3rem'
+          : ''
+      "
+      (click)="toggleCorrectness(answerGroup)"
+    ></i>
+    <i
+      *ngIf="
+        answerGroup.get('type')?.value == 'one_answer' ||
+        answerGroup.get('type')?.value == 'multiple_answers'
+      "
+      class="pi pi-trash cursor-pointer"
+      (click)="onHandleDeleteAnswer(answerGroup.get('id')?.value)"
+    ></i>
+  </div>
+</form>
