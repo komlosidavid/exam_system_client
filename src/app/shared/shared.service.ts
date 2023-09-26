@@ -8,7 +8,6 @@ export class SharedService {
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(
     this.getInitialStatus()
   );
-  // private userSubject = new BehaviorSubject<User>(new UserActivation);
 
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
@@ -21,7 +20,6 @@ export class SharedService {
     }
     return false;
   }
-
 
   setAuthenticationStatus(status: boolean) {
     this.isAuthenticatedSubject.next(status);
