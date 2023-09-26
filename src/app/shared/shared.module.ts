@@ -15,9 +15,24 @@ import { AnimateModule } from 'primeng/animate';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { BadgeModule } from 'primeng/badge';
 import { TieredMenuModule } from 'primeng/tieredmenu';
+import { AnswerComponent } from './answer/answer.component';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { InputTextModule } from 'primeng/inputtext';
+import { QuestionComponent } from './question/question.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CheckboxModule } from 'primeng/checkbox';
+import { MessagesModule } from 'primeng/messages';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @NgModule({
-  declarations: [NavComponent, ButtonComponent, TestCardComponent],
+  declarations: [
+    NavComponent,
+    ButtonComponent,
+    TestCardComponent,
+    AnswerComponent,
+    QuestionComponent,
+  ],
   imports: [
     CommonModule,
     ButtonModule,
@@ -30,7 +45,21 @@ import { TieredMenuModule } from 'primeng/tieredmenu';
     ProgressBarModule,
     BadgeModule,
     TieredMenuModule,
+    RadioButtonModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    FormsModule,
+    CheckboxModule,
+    MessagesModule,
+    InputNumberModule,
+    InputTextareaModule,
   ],
-  exports: [NavComponent, ButtonComponent, TestCardComponent],
+  exports: [
+    NavComponent,
+    ButtonComponent,
+    TestCardComponent,
+    AnswerComponent,
+    QuestionComponent,
+  ],
 })
 export class SharedModule {}
