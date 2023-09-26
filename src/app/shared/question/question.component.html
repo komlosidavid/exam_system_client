@@ -1,0 +1,83 @@
+<p-messages
+  [(value)]="questionErrorMessage"
+  [enableService]="true"
+  *ngIf="
+    answers &&
+    answers.length < 2 &&
+    (questionGroup.get('type')?.value == 'one_answer' ||
+      questionGroup.get('type')?.value == 'multiple_answers')
+  "
+  [closable]="false"
+></p-messages>
+<p-panel id="question">
+  <ng-template pTemplate="header">
+    <div class="w-full flex justify-content-between">
+      <form
+        class="w-7 flex gap-5 align-items-center"
+        [formGroup]="questionGroup"
+      >
+        <input
+          class="w-10"
+          type="text"
+          pInputText
+          placeholder="Question"
+          maxlength="255"
+          formControlName="question"
+        />
+        <div class="flex gap-3 align-items-center">
+          Points:
+          <p-inputNumber
+            inputId="integeronly"
+            styleClass="w-2rem"
+            [maxlength]="3"
+            formControlName="points"
+          ></p-inputNumber>
+        </div>
+      </form>
+
+      <div class="flex gap-3 align-items-center">
+        <i
+          class="pi pi-pencil cursor-pointer"
+          (click)="onToggleEditQuestion()"
+        ></i>
+        <i
+          class="pi pi-trash cursor-pointer"
+          (click)="onHandleDeleteQuestion(questionGroup.get('id')?.value)"
+        ></i>
+      </div>
+    </div>
+  </ng-template>
+  <app-answer
+    *ngIf="questionGroup.get('type')?.value == 'explanatory_answer'"
+    [answerGroup]="$any(questionGroup.get('answer'))"
+  ></app-answer>
+  <ng-container
+    *ngIf="
+      questionGroup.get('type')?.value == 'one_answer' ||
+      questionGroup.get('type')?.value == 'multiple_answers'
+    "
+  >
+    <app-answer
+      *ngFor="let answer of answers.controls; let i = index"
+      [answerGroup]="$any(answer)"
+      (onHandleMakeAnswerCorrectnessFalse)="makeAnswersIncorrect()"
+      (deleteAnswer)="onHandleDeleteAnswer($event, i)"
+    ></app-answer
+  ></ng-container>
+
+  <app-button
+    *ngIf="
+      questionGroup.get('type')?.value == 'one_answer' ||
+      questionGroup.get('type')?.value == 'multiple_answers'
+    "
+    [text]="'New asnwer'"
+    [button_has_icon]="true"
+    [btn_icon_class]="'pi pi-plus-circle'"
+    [is_button_link]="true"
+    [button_class_type]="'mt-3 p-button-secondary'"
+    (click)="onHandleAddNewAnswer()"
+  ></app-button>
+</p-panel>
+<p-card *ngIf="isEditing">
+  <h3 class="mt-0"><b>Settings:</b></h3>
+</p-card>
