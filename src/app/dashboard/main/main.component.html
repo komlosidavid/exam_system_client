@@ -3,46 +3,33 @@
     <div class="w-6">
       <div class="w-full">
         <div class="w-9 mx-auto flex gap-2">
-          <p-skeleton
-            *ngIf="isLoading"
-            width="10rem"
-            height="3rem"
-          ></p-skeleton>
-          <p-skeleton
-            *ngIf="isLoading"
-            width="10rem"
-            height="3rem"
-          ></p-skeleton>
-          <p-skeleton
-            *ngIf="isLoading"
-            width="10rem"
-            height="3rem"
-          ></p-skeleton>
+          <p-skeleton *ngIf="!tests" width="10rem" height="3rem"></p-skeleton>
+          <p-skeleton *ngIf="!tests" width="10rem" height="3rem"></p-skeleton>
+          <p-skeleton *ngIf="!tests" width="10rem" height="3rem"></p-skeleton>
           <app-button
-            *ngIf="!isLoading"
+            *ngIf="tests"
             [button_class_type]="'sm'"
             [text]="'Create new test'"
+            (click)="onHandleNavigateToCreateNewTest()"
           ></app-button>
         </div>
       </div>
       <div class="w-10 mx-auto mt-8">
-        <p-skeleton *ngIf="isLoading" width="29rem" height="3rem"></p-skeleton>
-        <p-menubar *ngIf="!isLoading" [model]="menubarItems">
+        <p-skeleton *ngIf="!tests" width="29rem" height="3rem"></p-skeleton>
+        <p-menubar *ngIf="tests" [model]="menubarItems">
           <ng-template pTemplate="end">
             <input
               type="search"
               pInputText
               placeholder="Search"
               class="w-full"
+              [disabled]="handleFilterDisabling()"
             />
           </ng-template>
         </p-menubar>
       </div>
       <div class="w-full">
-        <div
-          *ngIf="!isLoading && tests && tests.length > 0"
-          class="w-10 mx-auto"
-        >
+        <div *ngIf="tests && tests.length > 0" class="w-10 mx-auto">
           <p class="text-xl">{{ selectedFilter }}</p>
         </div>
         <div
@@ -56,7 +43,7 @@
           ></app-test-card>
         </div>
         <div
-          *ngIf="!isLoading && tests && tests.length > 0"
+          *ngIf="tests && tests.length > 0"
           class="w-full flex justify-content-center mt-5"
         >
           <app-button
