@@ -9,8 +9,6 @@ import { LoginComponent } from './login/login.component';
 import { AutocompleteoffDirective } from '../directives/autocompleteoff.directive';
 import { SharedModule } from '../shared/shared.module';
 import { ToastModule } from 'primeng/toast';
-import { TokenInterceptor } from './token.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [LoginComponent, AutocompleteoffDirective],
@@ -22,13 +20,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     PasswordModule,
     SharedModule,
     ToastModule,
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: TokenInterceptor,
-      multi: true,
-    },
   ],
 })
 export class AuthModule {}
