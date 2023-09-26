@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { Test } from 'src/app/interfaces/testInterface';
-import { User } from 'src/app/interfaces/userInterface';
+import { Test } from 'src/app/models/test.model';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-test-card',
