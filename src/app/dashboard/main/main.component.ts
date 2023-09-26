@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../dashboard.service';
-import { Test } from 'src/app/interfaces/testInterface';
 import { MenuItem } from 'primeng/api';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { Test } from 'src/app/models/test.model';
 
 @Component({
   selector: 'app-main',
@@ -14,13 +14,10 @@ export class MainComponent implements OnInit {
   size: number = 5;
   isLast: boolean = false;
   tests!: Array<Test> | null;
-  filteredTests!: Array<Test>;
   menubarItems!: MenuItem[] | undefined;
   selectedFilter: string = 'All';
-  isLoading: boolean = true;
-  isAllWasNull: boolean = true;
 
-  constructor(private service: DashboardService) {}
+  constructor(private service: DashboardService, private router: Router) {}
 
   ngOnInit(): void {
     var that = this;
@@ -28,7 +25,7 @@ export class MainComponent implements OnInit {
       {
         label: 'Filter',
         icon: 'pi pi-filter',
-        disabled: false,
+        disabled: this.handleFilterDisabling(),
         items: [
           {
             label: 'All',
@@ -53,7 +50,7 @@ export class MainComponent implements OnInit {
       {
         label: 'Sort',
         icon: 'pi pi-sort',
-        disabled: false,
+        disabled: this.handleFilterDisabling(),
         items: [
           {
             label: 'By date',
@@ -64,13 +61,17 @@ export class MainComponent implements OnInit {
     this.loadData(false);
   }
 
-  private setFilterAndSortDisabled() {
-    if (!this.isAllWasNull) {
-      this.menubarItems?.forEach((item) => {
-        item.disabled = true;
-      });
-      this.tests = null;
+  handleFilterDisabling(): boolean {
+    if (!this.tests || this.tests.length == 0) {
+      return true;
     }
+    return false;
+  }
+
+  handleRenewFilterDisabling(): void {
+    this.menubarItems?.forEach((item) => {
+      item.disabled = this.handleFilterDisabling();
+    });
   }
 
   loadMoreData(): void {
@@ -94,21 +95,26 @@ export class MainComponent implements OnInit {
       .subscribe({
         next: (response) => {
           if (response.content.length == 0) {
-            this.setFilterAndSortDisabled();
+            this.tests = new Array();
           } else {
             if (!this.tests) {
               this.tests = response.content;
             } else {
               this.tests.push(response.content);
             }
+            this.handleRenewFilterDisabling();
           }
           if (response.last) {
             this.isLast = true;
           }
         },
         complete: () => {
-          this.isLoading = false;
+          // this.isLoading = false;
         },
       });
+  }
+
+  onHandleNavigateToCreateNewTest(): void {
+    this.router.navigateByUrl('dashboard/create');
   }
 }
