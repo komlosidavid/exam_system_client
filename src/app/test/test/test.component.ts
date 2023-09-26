@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Test } from 'src/app/interfaces/testInterface';
+import { Test } from 'src/app/models/test.model';
 
 @Component({
   selector: 'app-test',
