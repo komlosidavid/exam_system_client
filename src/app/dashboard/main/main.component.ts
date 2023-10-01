@@ -115,6 +115,6 @@ export class MainComponent implements OnInit {
   }
 
   onHandleNavigateToCreateNewTest(): void {
-    this.router.navigateByUrl('dashboard/create');
+    this.router.navigateByUrl('create');
   }
 }
