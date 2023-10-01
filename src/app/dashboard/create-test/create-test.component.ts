@@ -11,6 +11,7 @@ import { Question } from 'src/app/models/question.model';
 import { Test } from 'src/app/models/test.model';
 import { DashboardService } from '../dashboard.service';
 import { MenuItem, Message } from 'primeng/api';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-create-test',
@@ -23,9 +24,14 @@ export class CreateTestComponent implements AfterViewChecked {
   items: MenuItem[];
   testErrorMessage: Message[];
   testFormErrorMessage: Message[];
+  addUserPanelOpen: boolean = false;
+  addCollaboratorsPanel: boolean = false;
+  addStudentsPanel: boolean = false;
 
   form!: FormGroup;
   questionHeight!: number;
+  teachers!: Array<User>;
+  selectedTeachers: Array<User> = new Array<User>;
 
   constructor(private _fb: FormBuilder, private service: DashboardService) {
     this.form = this._fb.group({
@@ -34,6 +40,8 @@ export class CreateTestComponent implements AfterViewChecked {
         Validators.minLength(5),
         Validators.maxLength(255),
       ]),
+      collaborators: this._fb.array([]),
+      students: this._fb.array([]),
       questions: this._fb.array([]),
     });
 
@@ -80,6 +88,14 @@ export class CreateTestComponent implements AfterViewChecked {
       this.scrollDownAfterQuestionCreate();
       this.isRendered = false;
     }
+  }
+
+  get collaborators(): FormArray {
+    return this.form.get('collaborators') as FormArray;
+  }
+
+  get students(): FormArray {
+    return this.form.get('students') as FormArray;
   }
 
   get questions(): FormArray {
@@ -175,6 +191,30 @@ export class CreateTestComponent implements AfterViewChecked {
         }),
       })
     );
+  }
+
+  openAddUserPanel(type?: string) {
+    this.addUserPanelOpen = true;
+    if (type == 'collaborators') {
+      this.addCollaboratorsPanel = true;
+      this.addStudentsPanel = false;
+
+      this.service.getAllTeachers().subscribe({
+        next: (response) => {
+          this.teachers = response.content;
+        },
+        error: (response) => {
+          console.log(response);
+        },
+      });
+    } else {
+      this.addCollaboratorsPanel = false;
+      this.addStudentsPanel = true;
+    }
+  }
+
+  closeAddUserPanel() {
+    this.addUserPanelOpen = false;
   }
 
   scrollDownAfterQuestionCreate(): void {
