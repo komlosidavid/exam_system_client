@@ -1,5 +1,43 @@
 <div class="p-5 flex justify-content-between flex-wrap">
+  <div *ngIf="addUserPanelOpen" class="w-full p-5 flex flex-column gap-3">
+    <div *ngIf="addCollaboratorsPanel" class="flex flex-column gap-5">
+      <div class="flex align-items-center gap-6">
+        <h3 class="mt-0">Search for collaborators:</h3>
+        <input pInputText type="search" />
+      </div>
+      <div *ngIf="teachers && teachers.length > 0" class="w-6 flex gap-5 flex-wrap">
+        <div
+          *ngFor="let teacher of teachers"
+          class="flex gap-2 align-items-center"
+        >
+          <p-avatar icon="pi pi-user" shape="circle" size="large"></p-avatar>
+          <span class="text-base">{{ teacher.fullname }}</span>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="addStudentsPanel">students</div>
+    <div class="w-full flex justify-content-center">
+      <i
+        class="pi pi-angle-up cursor-pointer"
+        (click)="closeAddUserPanel()"
+      ></i>
+    </div>
+  </div>
   <div class="w-8 mx-auto">
+    <div class="w-full flex gap-3 mx-auto p-3">
+      <app-button
+        [button_has_icon]="true"
+        [btn_icon_class]="'pi pi-users'"
+        [text]="'Add collaborators'"
+        (click)="openAddUserPanel('collaborators')"
+      ></app-button>
+      <app-button
+        [button_has_icon]="true"
+        [btn_icon_class]="'pi pi-users'"
+        [text]="'Add students'"
+        (click)="openAddUserPanel('students')"
+      ></app-button>
+    </div>
     <form [formGroup]="form">
       <p-messages
         [(value)]="testErrorMessage"
@@ -59,6 +97,61 @@
     </form>
   </div>
   <div class="w-30rem mx-auto">
+    <div class="w-full flex p-2 mb-3">
+      <div class="w-6 flex flex-column gap-3">
+        <span class="font-bold text-lg">Collaborators:</span>
+        <p-avatarGroup>
+          <p-avatar
+            *ngIf="selectedTeachers && selectedTeachers.length == 0"
+            size="normal"
+            label="0"
+            shape="circle"
+          ></p-avatar>
+          <ng-container
+            *ngFor="let teacher of selectedTeachers; let i = index"
+            ><p-avatar
+              *ngIf="i < 4"
+              size="normal"
+              icon="pi pi-user"
+              shape="circle"
+            ></p-avatar
+          ></ng-container>
+          <p-avatar
+            *ngIf="selectedTeachers && selectedTeachers.length > 4"
+            size="normal"
+            [label]="'+' + (selectedTeachers.length - 4)"
+            styleClass="bg-primary"
+            shape="circle"
+          ></p-avatar>
+        </p-avatarGroup>
+      </div>
+      <div class="w-6 flex flex-column gap-3">
+        <span class="font-bold text-lg">Students:</span>
+        <p-avatarGroup>
+          <p-avatar
+            *ngIf="students.length == 0"
+            size="normal"
+            label="0"
+            shape="circle"
+          ></p-avatar>
+          <ng-container *ngFor="let student of students.controls; let i = index"
+            ><p-avatar
+              *ngIf="i < 4"
+              size="normal"
+              icon="pi pi-user"
+              shape="circle"
+            ></p-avatar
+          ></ng-container>
+          <p-avatar
+            *ngIf="students.length > 4"
+            size="normal"
+            [label]="'+' + (students.length - 4)"
+            styleClass="bg-primary"
+            shape="circle"
+          ></p-avatar>
+        </p-avatarGroup>
+      </div>
+    </div>
     <p-card header="Summary" class="sticky-card">
       <b>Questions:</b>
       <div class="mt-3">
