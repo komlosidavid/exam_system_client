@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SharedService } from '../shared.service';
+import { Store, select } from '@ngrx/store';
+import { UserClass } from 'src/app/models/userClass.model';
+import { selectUser } from 'src/app/store/reducers/auth.reducers';
 
 @Component({
   selector: 'app-nav',
@@ -8,22 +10,17 @@ import { SharedService } from '../shared.service';
   styleUrls: ['./nav.component.css'],
 })
 export class NavComponent implements OnInit {
-  badgeValue: number = 0;
-  isAuthenticated: boolean = false;
+  user!: UserClass | null;
 
-  constructor(private router: Router, private sharedService: SharedService) {}
+  constructor(private router: Router, private store: Store) {}
 
   ngOnInit(): void {
-    this.sharedService.isAuthenticated$.subscribe((status) => {
-      this.isAuthenticated = status;
+    this.store.pipe(select(selectUser)).subscribe((user) => {
+      this.user = user;
     });
-
-    //this.logout();
   }
 
   logout(): void {
-    localStorage.clear();
-    this.sharedService.setAuthenticationStatus(false);
     this.router.navigateByUrl('/auth');
   }
 }
