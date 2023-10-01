@@ -5,12 +5,11 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { AuthenticationRequest } from 'src/app/interfaces/authenticationRequest';
-import { AuthService } from '../auth.service';
 import { MessageService } from 'primeng/api';
-import { AuthenticationResponse } from 'src/app/interfaces/AuthenticationResponse';
-import { Router } from '@angular/router';
-import { SharedService } from 'src/app/shared/shared.service';
+import { Store, select } from '@ngrx/store';
+import { AuthenticationRequest } from 'src/app/interfaces/authenticationRequest';
+import * as AuthActions from '../../store/actions/auth.actions';
+import { selectErrorMessage } from 'src/app/store/reducers/auth.reducers';
 
 @Component({
   selector: 'app-login',
@@ -21,12 +20,12 @@ import { SharedService } from 'src/app/shared/shared.service';
 export class LoginComponent implements OnInit {
   form!: FormGroup;
 
+  isError: boolean = false;
+
   constructor(
     private _fb: FormBuilder,
-    private service: AuthService,
-    private messageService: MessageService,
-    private router: Router,
-    private sharedService: SharedService
+    private store: Store,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -43,28 +42,22 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  onHandleAuthentication(): void {
+  async onHandleAuthentication(): Promise<any> {
     const payload: AuthenticationRequest = {
       username: this.form.controls['username'].value,
       password: this.form.controls['password'].value,
     };
 
-    this.service.onHandleAuthentication(payload).subscribe({
-      next: (response: AuthenticationResponse) => {
-        localStorage.setItem('accessToken', response.accessToken);
-        localStorage.setItem('refreshToken', response.refreshToken);
-        this.sharedService.setAuthenticationStatus(true);
-      },
-      complete: () => {
-        this.router.navigateByUrl('dashboard');
-      },
-      error: (response) => {
+    this.store.dispatch(AuthActions.loginRequest({ payload }));
+
+    this.store.pipe(select(selectErrorMessage)).subscribe((error: any) => {
+      if (error && error.status === 403) {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: response.error.message,
+          detail: error.error.message,
         });
-      },
+      }
     });
   }
 }
