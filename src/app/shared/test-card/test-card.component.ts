@@ -39,8 +39,12 @@ export class TestCardComponent implements OnInit {
   }
 
   getCollaboratorInitials(collaborator: User): string {
-    var names = collaborator.fullname.split(' ');
-    return names[0].charAt(0) + names[1].charAt(0);
+    var names = collaborator.fullname?.split(' ');
+    if (names) {
+      return names[0].charAt(0) + names[1].charAt(0);
+    }
+
+    return '';
   }
 
   onHandleNavigateToTest(test: Test): void {
