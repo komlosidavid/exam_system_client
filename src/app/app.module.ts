@@ -10,9 +10,16 @@ import { AuthModule } from './auth/auth.module';
 import { CalendarModule } from 'angular-calendar';
 import { DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { TokenInterceptor } from './auth/token.interceptor';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { TokenInterceptor } from './token.interceptor';
 import { ReactiveFormsModule } from '@angular/forms';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects } from './store/effects/auth.effects';
+import { StoreModule, MetaReducer } from '@ngrx/store';
+import { authReducer } from './store/reducers/auth.reducers';
+import { hydrationMetaReducer } from './store/reducers/hydration.reducer';
+import { HydrationEffects } from './store/effects/hydration.effects';
+
+export const metaReducers: MetaReducer[] = [hydrationMetaReducer];
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,12 +35,10 @@ import { ReactiveFormsModule } from '@angular/forms';
       useFactory: adapterFactory,
     }),
     ReactiveFormsModule,
+    StoreModule.forRoot({ auth: authReducer }, { metaReducers }),
+    EffectsModule.forRoot([AuthEffects, HydrationEffects]),
   ],
   providers: [
-    {
-      provide: LocationStrategy,
-      useClass: HashLocationStrategy,
-    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
