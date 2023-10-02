@@ -5,7 +5,6 @@ export const hydrationMetaReducer = (
   reducer: ActionReducer<State>
 ): ActionReducer<State> => {
   return (state, action) => {
-    console.log(action.type);
     if (action.type === INIT || action.type === UPDATE) {
       const storageValue = localStorage.getItem('state');
       if (storageValue) {
