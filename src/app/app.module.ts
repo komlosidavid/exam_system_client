@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -16,10 +16,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './store/effects/auth.effects';
 import { StoreModule, MetaReducer } from '@ngrx/store';
 import { authReducer } from './store/reducers/auth.reducers';
-import { hydrationMetaReducer } from './store/reducers/hydration.reducer';
-import { HydrationEffects } from './store/effects/hydration.effects';
-
-export const metaReducers: MetaReducer[] = [hydrationMetaReducer];
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { metaReducers } from './store/states/hydration.states';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,8 +33,11 @@ export const metaReducers: MetaReducer[] = [hydrationMetaReducer];
       useFactory: adapterFactory,
     }),
     ReactiveFormsModule,
-    StoreModule.forRoot({ auth: authReducer }, { metaReducers }),
-    EffectsModule.forRoot([AuthEffects, HydrationEffects]),
+    StoreModule.forRoot({ auth: authReducer }, { metaReducers: metaReducers }),
+    StoreDevtoolsModule.instrument({}),
+    EffectsModule.forRoot([AuthEffects]),
+
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   providers: [
     {
