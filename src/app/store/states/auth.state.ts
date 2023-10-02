@@ -1,10 +1,10 @@
-import { UserClass } from 'src/app/models/userClass.model';
+import { User } from 'src/app/models/user.model';
 
 export interface State {
   isAuthenticated: boolean;
   accessToken: string | null;
   refreshToken: string | null;
-  user: UserClass | null;
+  user: User | null;
   loginError?: string;
 }
 
