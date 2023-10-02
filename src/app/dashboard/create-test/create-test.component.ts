@@ -11,7 +11,10 @@ import { Question } from 'src/app/models/question.model';
 import { Test } from 'src/app/models/test.model';
 import { DashboardService } from '../dashboard.service';
 import { MenuItem, Message } from 'primeng/api';
+import { Store, select } from '@ngrx/store';
+import { selectUser } from 'src/app/store/reducers/auth.reducers';
 import { User } from 'src/app/models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-test',
@@ -32,8 +35,14 @@ export class CreateTestComponent implements AfterViewChecked {
   questionHeight!: number;
   teachers!: Array<User>;
   selectedTeachers: Array<User> = new Array<User>();
+  draggedTeacher: User | undefined | null;
 
-  constructor(private _fb: FormBuilder, private service: DashboardService) {
+  constructor(
+    private _fb: FormBuilder,
+    private service: DashboardService,
+    private router: Router,
+    private store: Store
+  ) {
     this.form = this._fb.group({
       subject: new FormControl('', [
         Validators.required,
@@ -201,7 +210,14 @@ export class CreateTestComponent implements AfterViewChecked {
 
       this.service.getAllTeachers().subscribe({
         next: (response) => {
-          this.teachers = response.content;
+          if (this.selectedTeachers.length > 0) {
+            this.teachers = response.content.filter(
+              (user: User) =>
+                !this.isContaining(this.selectedTeachers, user.id!.toString())
+            );
+          } else {
+            this.teachers = response.content;
+          }
         },
         error: (response) => {
           console.log(response);
@@ -213,8 +229,33 @@ export class CreateTestComponent implements AfterViewChecked {
     }
   }
 
+  private isContaining(list: Array<User>, id: string) {
+    let contains = list.filter((user: User) => user.id?.toString() == id);
+    if (contains.length > 0) {
+      return true;
+    }
+
+    return false;
+  }
+
   dragStart(teacher: User) {
-    
+    this.draggedTeacher = teacher;
+  }
+
+  drop() {
+    if (this.draggedTeacher) {
+      let index = this.findIndex(this.draggedTeacher);
+      this.selectedTeachers = [
+        ...(this.selectedTeachers as User[]),
+        this.draggedTeacher,
+      ];
+      this.teachers = this.teachers.filter((val, i) => i != index);
+      this.draggedTeacher = null;
+    }
+  }
+
+  dragEnd() {
+    this.draggedTeacher = null;
   }
 
   closeAddUserPanel() {
@@ -227,14 +268,41 @@ export class CreateTestComponent implements AfterViewChecked {
     });
   }
 
+  deleteFromSelected(
+    from: Array<User>,
+    to: Array<User>,
+    id: string | undefined
+  ) {
+    to.push(from.filter((user) => user.id == id)[0]);
+    this.selectedTeachers = from.filter((user) => user.id != id);
+  }
+
   onHandleDeleteQuestion(id: number, index: number): void {
     this.questions.removeAt(index);
   }
 
+  private findIndex(teacher: User) {
+    let index = -1;
+    for (let i = 0; i < (this.teachers as User[]).length; i++) {
+      if (teacher.id === (this.teachers as User[])[i].id) {
+        index = i;
+        break;
+      }
+    }
+    return index;
+  }
+
   onHandleCreateNewTest(): void {
+    let creatorId;
+    this.store.pipe(select(selectUser)).subscribe((user) => {
+      creatorId = user?.id;
+    });
+
     const payload: Test = {
-      collaborators: [],
-      creator: '49454384-37f7-48d1-8de4-4d36acbab6a8',
+      collaborators: this.selectedTeachers.map(
+        (teacher) => teacher.id
+      ) as User[],
+      creator: creatorId!,
       finishedStudents: 0,
       students: [],
       subject: this.form.get('subject')?.value,
@@ -257,6 +325,9 @@ export class CreateTestComponent implements AfterViewChecked {
 
     console.log(JSON.stringify(payload));
     this.service.createTest(payload).subscribe({
+      complete: () => {
+        this.router.navigateByUrl('/');
+      },
       error: (response) => {
         console.log(response);
       },
