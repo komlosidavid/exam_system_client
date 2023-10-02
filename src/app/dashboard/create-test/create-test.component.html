@@ -8,13 +8,14 @@
         </div>
         <div
           *ngIf="teachers && teachers.length > 0"
-          class="w-6 flex gap-5 flex-wrap"
+          class="w-full flex gap-5 flex-wrap"
         >
           <div
             *ngFor="let teacher of teachers"
-            class="flex gap-2 align-items-center"
+            class="flex gap-2 align-items-center cursor-move"
             pDraggable
             (onDragStart)="dragStart(teacher)"
+            (onDragEnd)="dragEnd()"
           >
             <p-avatar icon="pi pi-user" shape="circle" size="large"></p-avatar>
             <span class="text-base">{{ teacher.fullname }}</span>
@@ -25,14 +26,21 @@
         <div class="flex align-items-center gap-6">
           <h3 class="mt-0">Drag and drop your collaborators:</h3>
         </div>
-        <div class="w-6 flex gap-5 flex-wrap" pDroppable>
+        <div
+          class="w-full flex p-3 gap-5 flex-wrap border-1 border-400 border-round"
+          pDroppable
+          (onDrop)="drop()"
+        >
           <div
             *ngFor="let teacher of selectedTeachers"
             class="flex gap-2 align-items-center"
-            pDraggable
           >
             <p-avatar icon="pi pi-user" shape="circle" size="large"></p-avatar>
             <span class="text-base">{{ teacher.fullname }}</span>
+            <i
+              class="pi pi-trash cursor-pointer"
+              (click)="deleteFromSelected(selectedTeachers, teachers, teacher.id)"
+            ></i>
           </div>
         </div>
       </div>
