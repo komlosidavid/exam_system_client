@@ -7,14 +7,14 @@ import { Test } from '../models/test.model';
   providedIn: 'root',
 })
 export class DashboardService {
-  private URLTest: string = 'http://localhost:8080/api/v1/test/';
+  private URLTest: string = 'http://localhost:8080/api/v1/test';
   private URLUser: string = 'http://localhost:8080/api/v1/user/';
 
   constructor(private http: HttpClient) {}
 
   getAllTests(page: number, size: number, filter: string): Observable<any> {
     return this.http.get(
-      this.URLTest + filter + '?page=' + page + '&size=' + size
+      this.URLTest + "/" + filter + '?page=' + page + '&size=' + size
     );
   }
 
