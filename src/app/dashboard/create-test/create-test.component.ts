@@ -31,7 +31,7 @@ export class CreateTestComponent implements AfterViewChecked {
   form!: FormGroup;
   questionHeight!: number;
   teachers!: Array<User>;
-  selectedTeachers: Array<User> = new Array<User>;
+  selectedTeachers: Array<User> = new Array<User>();
 
   constructor(private _fb: FormBuilder, private service: DashboardService) {
     this.form = this._fb.group({
@@ -211,6 +211,10 @@ export class CreateTestComponent implements AfterViewChecked {
       this.addCollaboratorsPanel = false;
       this.addStudentsPanel = true;
     }
+  }
+
+  dragStart(teacher: User) {
+    
   }
 
   closeAddUserPanel() {
