@@ -14,7 +14,6 @@
   </div>
   <div *ngIf="user" class="flex gap-5 align-items-center mr-5">
     <i class="pi pi-bell mr-3" style="font-size: 1.3rem"></i>
-    <!-- <app-button [button_has_icon]="true" [btn_icon_class]="'pi-user'" [is_button_link]="true" [text]="'username'"></app-button> -->
     <div class="flex align-items-center gap-3">
       <p-avatar
         icon="pi pi-user"
@@ -22,7 +21,7 @@
         size="normal"
         shape="circle"
       ></p-avatar>
-      <span class="font-semibold" style="font-size: 0.9rem">{{
+      <span (click)="logout()" class="font-semibold" style="font-size: 0.9rem">{{
         user.fullname
       }}</span>
     </div>
