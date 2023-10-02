@@ -15,7 +15,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AnswerComponent } from '../test/answer/answer.component';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import { DragDropModule } from 'primeng/dragdrop';
 import { MessagesModule } from 'primeng/messages';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
