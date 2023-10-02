@@ -1,17 +1,39 @@
 <div class="p-5 flex justify-content-between flex-wrap">
   <div *ngIf="addUserPanelOpen" class="w-full p-5 flex flex-column gap-3">
-    <div *ngIf="addCollaboratorsPanel" class="flex flex-column gap-5">
-      <div class="flex align-items-center gap-6">
-        <h3 class="mt-0">Search for collaborators:</h3>
-        <input pInputText type="search" />
-      </div>
-      <div *ngIf="teachers && teachers.length > 0" class="w-6 flex gap-5 flex-wrap">
+    <div *ngIf="addCollaboratorsPanel" class="flex align-items-center gap-5">
+      <div class="w-6 flex flex-column gap-5">
+        <div class="flex align-items-center gap-6">
+          <h3 class="mt-0">Search for collaborators:</h3>
+          <input pInputText type="search" />
+        </div>
         <div
-          *ngFor="let teacher of teachers"
-          class="flex gap-2 align-items-center"
+          *ngIf="teachers && teachers.length > 0"
+          class="w-6 flex gap-5 flex-wrap"
         >
-          <p-avatar icon="pi pi-user" shape="circle" size="large"></p-avatar>
-          <span class="text-base">{{ teacher.fullname }}</span>
+          <div
+            *ngFor="let teacher of teachers"
+            class="flex gap-2 align-items-center"
+            pDraggable
+            (onDragStart)="dragStart(teacher)"
+          >
+            <p-avatar icon="pi pi-user" shape="circle" size="large"></p-avatar>
+            <span class="text-base">{{ teacher.fullname }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="w-6 flex flex-column gap-5">
+        <div class="flex align-items-center gap-6">
+          <h3 class="mt-0">Drag and drop your collaborators:</h3>
+        </div>
+        <div class="w-6 flex gap-5 flex-wrap" pDroppable>
+          <div
+            *ngFor="let teacher of selectedTeachers"
+            class="flex gap-2 align-items-center"
+            pDraggable
+          >
+            <p-avatar icon="pi pi-user" shape="circle" size="large"></p-avatar>
+            <span class="text-base">{{ teacher.fullname }}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -107,8 +129,7 @@
             label="0"
             shape="circle"
           ></p-avatar>
-          <ng-container
-            *ngFor="let teacher of selectedTeachers; let i = index"
+          <ng-container *ngFor="let teacher of selectedTeachers; let i = index"
             ><p-avatar
               *ngIf="i < 4"
               size="normal"
