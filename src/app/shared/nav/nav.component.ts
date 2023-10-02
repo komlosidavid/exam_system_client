@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { UserClass } from 'src/app/models/userClass.model';
 import { selectUser } from 'src/app/store/reducers/auth.reducers';
+import * as AuthActions from '../../store/actions/auth.actions';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-nav',
@@ -10,7 +11,7 @@ import { selectUser } from 'src/app/store/reducers/auth.reducers';
   styleUrls: ['./nav.component.css'],
 })
 export class NavComponent implements OnInit {
-  user!: UserClass | null;
+  user!: User | null;
 
   constructor(private router: Router, private store: Store) {}
 
@@ -21,6 +22,6 @@ export class NavComponent implements OnInit {
   }
 
   logout(): void {
-    this.router.navigateByUrl('/auth');
+    this.store.dispatch(AuthActions.logout());
   }
 }
