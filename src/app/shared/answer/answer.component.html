@@ -21,17 +21,24 @@
     />
     <div
       class="w-full flex flex-wrap gap-3"
-      *ngIf="answerGroup.get('type')?.value == 'explanatory_answer'"
+      *ngIf="
+        answerGroup.value.length > 0 &&
+        answerGroup.controls[0].get('type')?.value == 'explanatory_answer'
+      "
     >
       <textarea
         class="w-full resize-none"
         pInputTextarea
         rows="10"
-        formControlName="answer"
+        [formControl]="$any(answerGroup.controls[0].get('answer'))"
       ></textarea>
       <div class="flex gap-3 align-items-center">
         Max characters:
-        <p-inputNumber inputId="integeronly" [maxlength]="3" formControlName="max"></p-inputNumber>
+        <p-inputNumber
+          inputId="integeronly"
+          [maxlength]="3"
+          [formControl]="$any(answerGroup.controls[0].get('max'))"
+        ></p-inputNumber>
       </div>
     </div>
 
