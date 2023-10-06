@@ -1,0 +1,53 @@
+<div class="flex align-items-center gap-5">
+  <div class="w-6 flex flex-column gap-5">
+    <div class="flex align-items-center gap-6">
+      <h3 class="mt-0">
+        {{
+          role == "teacher" ? "Search for collaborators" : "Search for students"
+        }}
+      </h3>
+      <input pInputText type="search" />
+    </div>
+    <div
+      *ngIf="users && users.length > 0"
+      class="w-full grid overflow-x-auto p-2 h-8rem"
+    >
+      <div class="col-4" *ngFor="let user of users">
+        <div
+          class="flex gap-2 align-items-center cursor-move w-9rem"
+          pDraggable
+          (onDragStart)="dragStart(user)"
+          (onDragEnd)="dragEnd()"
+        >
+          <p-avatar icon="pi pi-user" shape="circle" size="large"></p-avatar>
+          <span class="text-base">{{ user.fullname }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="w-6 flex flex-column gap-5">
+    <div class="flex mb-3 align-items-center gap-6">
+      <h3 class="mt-0">
+        Drag and drop your
+        {{ role == "collaborators" ? "collaborators" : "students" }}
+        here:
+      </h3>
+    </div>
+    <div
+      class="w-full p-2 grid overflow-x-auto h-9rem border-1 border-300"
+      pDroppable
+      (onDrop)="drop()"
+    >
+      <div class="col-4" *ngFor="let user of selectedUsers">
+        <div class="flex gap-2 align-items-center w-9rem">
+          <p-avatar icon="pi pi-user" shape="circle" size="large"></p-avatar>
+          <span class="text-base">{{ user.fullname }}</span>
+          <i
+            class="pi pi-trash cursor-pointer"
+            (click)="deleteFromSelected(selectedUsers, users, user.id)"
+          ></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
