@@ -14,15 +14,15 @@ export class DashboardService {
 
   getAllTests(page: number, size: number, filter: string): Observable<any> {
     return this.http.get(
-      this.URLTest + "/" + filter + '?page=' + page + '&size=' + size
+      this.URLTest + '/' + filter + '?page=' + page + '&size=' + size
     );
   }
 
   createTest(payload: Test): Observable<any> {
-    return this.http.post<Test>(this.URLTest, payload);
+    return this.http.post<any>(this.URLTest, payload);
   }
 
-  getAllTeachers(): Observable<any> {
-    return this.http.get(this.URLUser + 'teachers');
+  getAllUsersByRole(role: string): Observable<any> {
+    return this.http.get(this.URLUser + 'get?role=' + role);
   }
 }
