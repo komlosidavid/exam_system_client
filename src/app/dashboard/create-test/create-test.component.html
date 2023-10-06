@@ -1,51 +1,17 @@
 <div class="p-5 flex justify-content-between flex-wrap">
   <div *ngIf="addUserPanelOpen" class="w-full p-5 flex flex-column gap-3">
-    <div *ngIf="addCollaboratorsPanel" class="flex align-items-center gap-5">
-      <div class="w-6 flex flex-column gap-5">
-        <div class="flex align-items-center gap-6">
-          <h3 class="mt-0">Search for collaborators:</h3>
-          <input pInputText type="search" />
-        </div>
-        <div
-          *ngIf="teachers && teachers.length > 0"
-          class="w-full flex gap-5 flex-wrap"
-        >
-          <div
-            *ngFor="let teacher of teachers"
-            class="flex gap-2 align-items-center cursor-move"
-            pDraggable
-            (onDragStart)="dragStart(teacher)"
-            (onDragEnd)="dragEnd()"
-          >
-            <p-avatar icon="pi pi-user" shape="circle" size="large"></p-avatar>
-            <span class="text-base">{{ teacher.fullname }}</span>
-          </div>
-        </div>
-      </div>
-      <div class="w-6 flex flex-column gap-5">
-        <div class="flex align-items-center gap-6">
-          <h3 class="mt-0">Drag and drop your collaborators:</h3>
-        </div>
-        <div
-          class="w-full flex p-3 gap-5 flex-wrap border-1 border-400 border-round"
-          pDroppable
-          (onDrop)="drop()"
-        >
-          <div
-            *ngFor="let teacher of selectedTeachers"
-            class="flex gap-2 align-items-center"
-          >
-            <p-avatar icon="pi pi-user" shape="circle" size="large"></p-avatar>
-            <span class="text-base">{{ teacher.fullname }}</span>
-            <i
-              class="pi pi-trash cursor-pointer"
-              (click)="deleteFromSelected(selectedTeachers, teachers, teacher.id)"
-            ></i>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="addStudentsPanel">students</div>
+    <app-add-user
+      *ngIf="addCollaboratorsPanel"
+      [role]="'teacher'"
+      [selectedUsers]="selectedCollaborators"
+      (selectedUsersEmitter)="addToCollaborators($event)"
+    ></app-add-user>
+    <app-add-user
+      *ngIf="addStudentsPanel"
+      [role]="'student'"
+      [selectedUsers]="selectedStudents"
+      (selectedUsersEmitter)="addToStudents($event)"
+    ></app-add-user>
     <div class="w-full flex justify-content-center">
       <i
         class="pi pi-angle-up cursor-pointer"
@@ -126,109 +92,10 @@
       </div>
     </form>
   </div>
-  <div class="w-30rem mx-auto">
-    <div class="w-full flex p-2 mb-3">
-      <div class="w-6 flex flex-column gap-3">
-        <span class="font-bold text-lg">Collaborators:</span>
-        <p-avatarGroup>
-          <p-avatar
-            *ngIf="selectedTeachers && selectedTeachers.length == 0"
-            size="normal"
-            label="0"
-            shape="circle"
-          ></p-avatar>
-          <ng-container *ngFor="let teacher of selectedTeachers; let i = index"
-            ><p-avatar
-              *ngIf="i < 4"
-              size="normal"
-              icon="pi pi-user"
-              shape="circle"
-            ></p-avatar
-          ></ng-container>
-          <p-avatar
-            *ngIf="selectedTeachers && selectedTeachers.length > 4"
-            size="normal"
-            [label]="'+' + (selectedTeachers.length - 4)"
-            styleClass="bg-primary"
-            shape="circle"
-          ></p-avatar>
-        </p-avatarGroup>
-      </div>
-      <div class="w-6 flex flex-column gap-3">
-        <span class="font-bold text-lg">Students:</span>
-        <p-avatarGroup>
-          <p-avatar
-            *ngIf="students.length == 0"
-            size="normal"
-            label="0"
-            shape="circle"
-          ></p-avatar>
-          <ng-container *ngFor="let student of students.controls; let i = index"
-            ><p-avatar
-              *ngIf="i < 4"
-              size="normal"
-              icon="pi pi-user"
-              shape="circle"
-            ></p-avatar
-          ></ng-container>
-          <p-avatar
-            *ngIf="students.length > 4"
-            size="normal"
-            [label]="'+' + (students.length - 4)"
-            styleClass="bg-primary"
-            shape="circle"
-          ></p-avatar>
-        </p-avatarGroup>
-      </div>
-    </div>
-    <p-card header="Summary" class="sticky-card">
-      <b>Questions:</b>
-      <div class="mt-3">
-        <div
-          class="w-3rem h-4rem border-1 border-300 surface-900"
-          *ngIf="questions.length < 1"
-        >
-          <div
-            class="w-full h-2rem bg-white flex justify-content-center align-items-center"
-          >
-            ?
-          </div>
-        </div>
-        <div *ngIf="questions.length > 0" class="w-full flex gap-3 flex-wrap">
-          <div
-            *ngFor="let question of questions.controls; let i = index"
-            class="w-3rem h-4rem border-1 border-300 cursor-pointer"
-            [ngClass]="question.invalid ? 'bg-red-500' : 'bg-green-600'"
-          >
-            <a
-              href="#question-{{ i }}"
-              class="text-color-secondary no-underline"
-            >
-              <div
-                class="w-full h-2rem bg-white flex justify-content-center align-items-center"
-              >
-                {{ i + 1 }}.
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-      <ng-template pTemplate="footer">
-        <div class="flex flex-column">
-          <p-messages
-            [(value)]="testFormErrorMessage"
-            [enableService]="true"
-            *ngIf="form.invalid"
-            [closable]="false"
-          ></p-messages>
-          <app-button
-            [text]="'Create test'"
-            [is_disabled]="form.invalid"
-            [button_class_type]="'w-full'"
-            (click)="onHandleCreateNewTest()"
-          ></app-button>
-        </div>
-      </ng-template>
-    </p-card>
-  </div>
+  <app-summary
+    [selectedCollaborators]="selectedCollaborators"
+    [selectedStudents]="selectedStudents"
+    [questions]="questions"
+    [form]="form"
+  ></app-summary>
 </div>
