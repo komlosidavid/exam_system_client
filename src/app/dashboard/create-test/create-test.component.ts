@@ -26,16 +26,14 @@ export class CreateTestComponent implements AfterViewChecked {
   isRendered: boolean = false;
   items: MenuItem[];
   testErrorMessage: Message[];
-  testFormErrorMessage: Message[];
   addUserPanelOpen: boolean = false;
   addCollaboratorsPanel: boolean = false;
   addStudentsPanel: boolean = false;
 
   form!: FormGroup;
   questionHeight!: number;
-  teachers!: Array<User>;
-  selectedTeachers: Array<User> = new Array<User>();
-  draggedTeacher: User | undefined | null;
+  selectedCollaborators: Array<User> = new Array<User>();
+  selectedStudents: Array<User> = new Array<User>();
 
   constructor(
     private _fb: FormBuilder,
@@ -72,14 +70,6 @@ export class CreateTestComponent implements AfterViewChecked {
         severity: 'warn',
         summary: 'Warning',
         detail: 'Test should contain at least one question!',
-      },
-    ];
-
-    this.testFormErrorMessage = [
-      {
-        severity: 'warn',
-        summary: 'Warning',
-        detail: 'There is something wrong with your test!',
       },
     ];
 
@@ -122,6 +112,14 @@ export class CreateTestComponent implements AfterViewChecked {
       this.createQuestionWithTextarea();
     }
     this.isRendered = true;
+  }
+
+  addToCollaborators(collaborators: Array<User>): void {
+    this.selectedCollaborators = collaborators;
+  }
+
+  addToStudents(students: Array<User>) {
+    this.selectedStudents = students;
   }
 
   private createQuestionWithTwoAnswers(type: string) {
@@ -192,12 +190,14 @@ export class CreateTestComponent implements AfterViewChecked {
           '',
           Validators.compose([Validators.required, Validators.maxLength(3)])
         ),
-        answer: this._fb.group({
-          id: [Math.floor(Math.random() * 1000) + 1],
-          type: ['explanatory_answer'],
-          max: new FormControl('', Validators.compose([Validators.required])),
-          answer: new FormControl({ value: '', disabled: true }),
-        }),
+        answer: this._fb.array([
+          this._fb.group({
+            id: [Math.floor(Math.random() * 1000) + 1],
+            type: ['explanatory_answer'],
+            max: new FormControl('', Validators.compose([Validators.required])),
+            answer: new FormControl({ value: '', disabled: true }),
+          }),
+        ]),
       })
     );
   }
@@ -207,55 +207,10 @@ export class CreateTestComponent implements AfterViewChecked {
     if (type == 'collaborators') {
       this.addCollaboratorsPanel = true;
       this.addStudentsPanel = false;
-
-      this.service.getAllTeachers().subscribe({
-        next: (response) => {
-          if (this.selectedTeachers.length > 0) {
-            this.teachers = response.content.filter(
-              (user: User) =>
-                !this.isContaining(this.selectedTeachers, user.id!.toString())
-            );
-          } else {
-            this.teachers = response.content;
-          }
-        },
-        error: (response) => {
-          console.log(response);
-        },
-      });
     } else {
       this.addCollaboratorsPanel = false;
       this.addStudentsPanel = true;
     }
-  }
-
-  private isContaining(list: Array<User>, id: string) {
-    let contains = list.filter((user: User) => user.id?.toString() == id);
-    if (contains.length > 0) {
-      return true;
-    }
-
-    return false;
-  }
-
-  dragStart(teacher: User) {
-    this.draggedTeacher = teacher;
-  }
-
-  drop() {
-    if (this.draggedTeacher) {
-      let index = this.findIndex(this.draggedTeacher);
-      this.selectedTeachers = [
-        ...(this.selectedTeachers as User[]),
-        this.draggedTeacher,
-      ];
-      this.teachers = this.teachers.filter((val, i) => i != index);
-      this.draggedTeacher = null;
-    }
-  }
-
-  dragEnd() {
-    this.draggedTeacher = null;
   }
 
   closeAddUserPanel() {
@@ -268,69 +223,7 @@ export class CreateTestComponent implements AfterViewChecked {
     });
   }
 
-  deleteFromSelected(
-    from: Array<User>,
-    to: Array<User>,
-    id: string | undefined
-  ) {
-    to.push(from.filter((user) => user.id == id)[0]);
-    this.selectedTeachers = from.filter((user) => user.id != id);
-  }
-
   onHandleDeleteQuestion(id: number, index: number): void {
     this.questions.removeAt(index);
-  }
-
-  private findIndex(teacher: User) {
-    let index = -1;
-    for (let i = 0; i < (this.teachers as User[]).length; i++) {
-      if (teacher.id === (this.teachers as User[])[i].id) {
-        index = i;
-        break;
-      }
-    }
-    return index;
-  }
-
-  onHandleCreateNewTest(): void {
-    let creatorId;
-    this.store.pipe(select(selectUser)).subscribe((user) => {
-      creatorId = user?.id;
-    });
-
-    const payload: Test = {
-      collaborators: this.selectedTeachers.map(
-        (teacher) => teacher.id
-      ) as User[],
-      creator: creatorId!,
-      finishedStudents: 0,
-      students: [],
-      subject: this.form.get('subject')?.value,
-      questions: this.questions.value.map((questionControl: Question) => {
-        const question: Question = {
-          question: questionControl.question,
-          points: 0,
-          type: questionControl.type.toUpperCase(),
-          answers: questionControl.answers.map((answerControl: Answer) => {
-            return {
-              isCorrect: answerControl.isCorrect,
-              answer: answerControl.answer,
-              type: answerControl.type.toUpperCase(),
-            };
-          }),
-        };
-        return question;
-      }),
-    };
-
-    console.log(JSON.stringify(payload));
-    this.service.createTest(payload).subscribe({
-      complete: () => {
-        this.router.navigateByUrl('/');
-      },
-      error: (response) => {
-        console.log(response);
-      },
-    });
   }
 }
