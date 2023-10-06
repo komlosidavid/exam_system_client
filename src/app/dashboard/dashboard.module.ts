@@ -13,21 +13,22 @@ import { CreateTestComponent } from './create-test/create-test.component';
 import { PanelModule } from 'primeng/panel';
 import { SplitButtonModule } from 'primeng/splitbutton';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NG_VALUE_ACCESSOR } from '@angular/forms';
-import { AnswerComponent } from '../test/answer/answer.component';
 import { DragDropModule } from 'primeng/dragdrop';
 import { MessagesModule } from 'primeng/messages';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
+import { AddUserComponent } from './add-user/add-user.component';
+import { CarouselModule } from 'primeng/carousel';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { SummaryComponent } from './summary/summary.component';
 
 @NgModule({
-  declarations: [MainComponent, CalendarComponent, CreateTestComponent],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => AnswerComponent),
-      multi: true,
-    },
+  declarations: [
+    MainComponent,
+    CalendarComponent,
+    CreateTestComponent,
+    AddUserComponent,
+    SummaryComponent,
   ],
   imports: [
     CommonModule,
@@ -45,6 +46,8 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
     MessagesModule,
     AvatarModule,
     AvatarGroupModule,
+    CarouselModule,
+    ScrollPanelModule,
   ],
 })
 export class DashboardModule {}
