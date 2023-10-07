@@ -1,4 +1,4 @@
-<div class="w-30rem mx-auto">
+<div class="w-30rem mx-auto sticky-card">
   <div class="w-full flex p-2 mb-3">
     <div class="w-6 flex flex-column gap-3">
       <span class="font-bold text-lg">Collaborators:</span>
@@ -73,7 +73,7 @@
           class="w-3rem h-4rem border-1 border-300 cursor-pointer"
           [ngClass]="question.invalid ? 'bg-red-500' : 'bg-green-600'"
         >
-          <a href="#question-{{ i }}" class="text-color-secondary no-underline">
+          <a href="/create#question-{{ i }}" class="text-color-secondary no-underline">
             <div
               class="w-full h-2rem bg-white flex justify-content-center align-items-center"
             >
