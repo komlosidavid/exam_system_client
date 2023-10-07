@@ -6,7 +6,7 @@
           role == "teacher" ? "Search for collaborators" : "Search for students"
         }}
       </h3>
-      <input pInputText type="search" />
+      <input pInputText type="search" [(ngModel)]="searchTerm" (ngModelChange)="searchForUser()" />
     </div>
     <div
       *ngIf="users && users.length > 0"
@@ -20,7 +20,7 @@
           (onDragEnd)="dragEnd()"
         >
           <p-avatar icon="pi pi-user" shape="circle" size="large"></p-avatar>
-          <span class="text-base">{{ user.fullname }}</span>
+          <span class="text-base">{{ user.fullName }}</span>
         </div>
       </div>
     </div>
@@ -41,7 +41,7 @@
       <div class="col-4" *ngFor="let user of selectedUsers">
         <div class="flex gap-2 align-items-center w-9rem">
           <p-avatar icon="pi pi-user" shape="circle" size="large"></p-avatar>
-          <span class="text-base">{{ user.fullname }}</span>
+          <span class="text-base">{{ user.fullName }}</span>
           <i
             class="pi pi-trash cursor-pointer"
             (click)="deleteFromSelected(selectedUsers, users, user.id)"
