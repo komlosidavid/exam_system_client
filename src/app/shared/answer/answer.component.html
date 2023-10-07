@@ -48,9 +48,9 @@
         answerGroup.get('type')?.value == 'multiple_answers'
       "
       class="pi pi-check cursor-pointer"
-      [class.checked]="answerGroup.get('isCorrect')?.value"
+      [class.checked]="answerGroup.get('correct')?.value"
       [style]="
-        answerGroup.get('isCorrect')?.value
+        answerGroup.get('correct')?.value
           ? 'color: green; font-size: 1.3rem'
           : ''
       "
