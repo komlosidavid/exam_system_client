@@ -20,18 +20,27 @@
     </div>
   </div>
   <div class="w-8 mx-auto">
-    <div class="w-full flex gap-3 mx-auto p-3">
+    <div class="w-full flex mx-auto p-3 justify-content-between">
+      <div class="flex gap-3">
+        <app-button
+          [button_has_icon]="true"
+          [btn_icon_class]="'pi pi-users'"
+          [text]="'Add collaborators'"
+          (click)="openAddUserPanel('collaborators')"
+        ></app-button>
+        <app-button
+          [button_has_icon]="true"
+          [btn_icon_class]="'pi pi-users'"
+          [text]="'Add students'"
+          (click)="openAddUserPanel('students')"
+        ></app-button>
+      </div>
       <app-button
         [button_has_icon]="true"
-        [btn_icon_class]="'pi pi-users'"
-        [text]="'Add collaborators'"
-        (click)="openAddUserPanel('collaborators')"
-      ></app-button>
-      <app-button
-        [button_has_icon]="true"
-        [btn_icon_class]="'pi pi-users'"
-        [text]="'Add students'"
-        (click)="openAddUserPanel('students')"
+        [btn_icon_class]="'pi pi-cog'"
+        [button_class_type]="'p-button-secondary'"
+        [text]="'Change test details'"
+        (click)="onHandlechangeTestDetails()"
       ></app-button>
     </div>
     <form [formGroup]="form">
@@ -99,3 +108,8 @@
     [form]="form"
   ></app-summary>
 </div>
+<app-test-settings
+  [isOpen]="isChangeTestDetailsModalOpen"
+  (settings)="handleTestSettingsChange($event)"
+  (toggleIsOpen)="onHandlechangeTestDetails()"
+></app-test-settings>
