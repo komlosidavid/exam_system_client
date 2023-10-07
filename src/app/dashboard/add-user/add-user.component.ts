@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { DashboardService } from '../dashboard.service';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-add-user',
@@ -18,6 +19,7 @@ export class AddUserComponent implements OnInit {
   draggedTeacher: User | undefined | null;
   @Input()
   role!: string;
+  searchTerm!: string;
 
   constructor(private service: DashboardService) {}
 
@@ -57,6 +59,17 @@ export class AddUserComponent implements OnInit {
       this.draggedTeacher = null;
       this.selectedUsersEmitter.emit(this.selectedUsers);
     }
+  }
+
+  searchForUser() {
+    this.service.getAllUsersByContainingFullName(this.searchTerm).subscribe({
+      next: (data) => {
+        this.users = data;
+      },
+      error: (response) => {
+        console.log(response);
+      },
+    });
   }
 
   deleteFromSelected(
