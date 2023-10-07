@@ -56,7 +56,7 @@ export class QuestionComponent implements OnInit {
         if (this.questionGroup.get('type')?.value == 'one_answer') {
           if (
             this.answers.controls.filter(
-              (control) => control.get('isCorrect')?.value
+              (control) => control.get('correct')?.value
             ).length == 0
           ) {
             this.questionGroup.setErrors({
@@ -86,7 +86,7 @@ export class QuestionComponent implements OnInit {
         id: [Math.floor(Math.random() * 1000) + 1],
         type: [this.questionGroup.get('type')?.value],
         answerSelect: new FormControl({ value: '', disabled: true }),
-        isCorrect: new FormControl(false),
+        correct: new FormControl(false),
         answer: new FormControl(
           '',
           Validators.compose([
@@ -101,7 +101,7 @@ export class QuestionComponent implements OnInit {
 
   makeAnswersIncorrect(): void {
     this.answers.controls.forEach((answer) => {
-      answer.get('isCorrect')?.setValue(false);
+      answer.get('correct')?.setValue(false);
     });
   }
 
