@@ -1,0 +1,80 @@
+<p-dialog
+  [(visible)]="isOpen"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="toggleIsOpen.emit()"
+  styleClass="w-10"
+  style="height: 80%"
+>
+  <ng-template pTemplate="header">
+    <div class="w-full pr-4 flex justify-content-between">
+      <h1 class="mt-0 font-semibold">Settings</h1>
+      <app-button
+        [button_has_icon]="true"
+        [btn_icon_class]="'pi pi-save'"
+        [text]="'Save'"
+        (click)="handleSettingsSave()"
+      ></app-button>
+    </div>
+  </ng-template>
+  <div class="w-full p-3 flex justify-content-center flex-wrap">
+    <div class="w-6">
+      <div class="flex gap-3 align-items-center mb-4">
+        <h3 class="mt-0 font-semibold">Test will be open from:</h3>
+        <p class="text-lg mt-0">
+          {{ testOpens | date : "yyyy. MMMM. dd 'at' HH:mm" }}
+        </p>
+      </div>
+
+      <div class="w-full flex flex-column gap-5">
+        <div class="w-full flex gap-3 align-items-center">
+          <p class="mt-0 py-2 text-lg">From now:</p>
+          <p-inputSwitch
+            class="m-0"
+            (onChange)="toggleIsOpenDateDisabled()"
+          ></p-inputSwitch>
+        </div>
+        <div
+          *ngIf="!isOpenDateDisabled"
+          class="w-10 flex justify-content-between align-items-center"
+        >
+          <div class="flex gap-3 align-items-center">
+            <div class="flex flex-column gap-1">
+              <label>Hour:</label>
+              <p-inputNumber
+                inputId="minmax"
+                [(ngModel)]="selectedHour"
+                (ngModelChange)="createTestOpenDate()"
+                [min]="0"
+                [max]="23"
+              ></p-inputNumber>
+            </div>
+
+            <div class="flex flex-column gap-1">
+              <label>Minute:</label>
+              <p-inputNumber
+                styleClass="w-6"
+                inputId="minmax"
+                [(ngModel)]="selectedMinute"
+                (ngModelChange)="createTestOpenDate()"
+                [min]="0"
+                [max]="59"
+              ></p-inputNumber>
+            </div>
+          </div>
+        </div>
+        <p-calendar
+          *ngIf="!isOpenDateDisabled"
+          styleClass="w-10 mx-auto"
+          [(ngModel)]="selectedDate"
+          (ngModelChange)="createTestOpenDate()"
+          [inline]="true"
+          [showWeek]="false"
+        ></p-calendar>
+      </div>
+    </div>
+    <div class="w-6"><h3 class="mt-0 font-semibold">Test closes at:</h3></div>
+  </div>
+</p-dialog>
