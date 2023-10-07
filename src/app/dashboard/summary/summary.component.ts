@@ -55,6 +55,7 @@ export class SummaryComponent implements OnInit {
       ) as User[],
       creator: creatorId!,
       finishedStudents: 0,
+      opensAt: this.form.get('opensAt')?.value,
       students: this.selectedStudents.map((student) => student.id) as User[],
       subject: this.form.get('subject')?.value,
       questions: this.questions.controls.map(
@@ -67,7 +68,7 @@ export class SummaryComponent implements OnInit {
               .get('answers')
               ?.value.map((answerControl: Answer) => {
                 return {
-                  isCorrect: answerControl.isCorrect,
+                  coorect: answerControl.correct,
                   answer: answerControl.answer,
                   type: answerControl.type.toUpperCase(),
                 };
