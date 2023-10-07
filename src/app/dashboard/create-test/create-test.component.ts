@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -6,15 +6,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Answer } from 'src/app/models/answer.model';
-import { Question } from 'src/app/models/question.model';
-import { Test } from 'src/app/models/test.model';
-import { DashboardService } from '../dashboard.service';
 import { MenuItem, Message } from 'primeng/api';
-import { Store, select } from '@ngrx/store';
-import { selectUser } from 'src/app/store/reducers/auth.reducers';
 import { User } from 'src/app/models/user.model';
-import { Router } from '@angular/router';
+import { TestSettings } from '../test-settings/test-settings.component';
 
 @Component({
   selector: 'app-create-test',
@@ -24,6 +18,7 @@ import { Router } from '@angular/router';
 export class CreateTestComponent implements AfterViewChecked {
   isEditTitle: boolean = false;
   isRendered: boolean = false;
+  isChangeTestDetailsModalOpen: boolean = false;
   items: MenuItem[];
   testErrorMessage: Message[];
   addUserPanelOpen: boolean = false;
@@ -35,12 +30,7 @@ export class CreateTestComponent implements AfterViewChecked {
   selectedCollaborators: Array<User> = new Array<User>();
   selectedStudents: Array<User> = new Array<User>();
 
-  constructor(
-    private _fb: FormBuilder,
-    private service: DashboardService,
-    private router: Router,
-    private store: Store
-  ) {
+  constructor(private _fb: FormBuilder) {
     this.form = this._fb.group({
       subject: new FormControl('', [
         Validators.required,
@@ -50,6 +40,7 @@ export class CreateTestComponent implements AfterViewChecked {
       collaborators: this._fb.array([]),
       students: this._fb.array([]),
       questions: this._fb.array([]),
+      opensAt: [new Date()],
     });
 
     this.items = [
@@ -144,7 +135,7 @@ export class CreateTestComponent implements AfterViewChecked {
             id: [Math.floor(Math.random() * 1000) + 1],
             type: [type],
             answerSelect: new FormControl({ value: '', disabled: true }),
-            isCorrect: new FormControl(false),
+            correct: new FormControl(false),
             answer: new FormControl(
               '',
               Validators.compose([
@@ -158,7 +149,7 @@ export class CreateTestComponent implements AfterViewChecked {
             id: [Math.floor(Math.random() * 1000) + 1],
             type: [type],
             answerSelect: new FormControl({ value: '', disabled: true }),
-            isCorrect: new FormControl(false),
+            correct: new FormControl(false),
             answer: new FormControl(
               '',
               Validators.compose([
@@ -213,6 +204,10 @@ export class CreateTestComponent implements AfterViewChecked {
     }
   }
 
+  onHandlechangeTestDetails(): void {
+    this.isChangeTestDetailsModalOpen = !this.isChangeTestDetailsModalOpen;
+  }
+
   closeAddUserPanel() {
     this.addUserPanelOpen = false;
   }
@@ -221,6 +216,11 @@ export class CreateTestComponent implements AfterViewChecked {
     window.scrollTo({
       top: document.body.scrollHeight,
     });
+  }
+
+  handleTestSettingsChange(settings: TestSettings) {
+    this.form.get('opensAt')?.setValue(new Date(settings.opensAt));
+    console.log(this.form.get('opensAt'));
   }
 
   onHandleDeleteQuestion(id: number, index: number): void {
