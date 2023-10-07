@@ -21,10 +21,10 @@ export class AnswerComponent {
   toggleCorrectness(group: FormGroup): void {
     if (group.get('type')?.value == 'one_answer') {
       this.onHandleMakeAnswerCorrectnessFalse.emit();
-      const isCorrectControl = group.get('isCorrect');
+      const isCorrectControl = group.get('correct');
       isCorrectControl!.setValue(!isCorrectControl!.value);
     } else {
-      const isCorrectControl = group.get('isCorrect');
+      const isCorrectControl = group.get('correct');
       isCorrectControl!.setValue(!isCorrectControl!.value);
     }
   }
