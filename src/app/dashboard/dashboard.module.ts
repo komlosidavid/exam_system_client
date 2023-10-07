@@ -1,4 +1,4 @@
-import { NgModule, forwardRef } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { MainComponent } from './main/main.component';
@@ -21,6 +21,12 @@ import { AddUserComponent } from './add-user/add-user.component';
 import { CarouselModule } from 'primeng/carousel';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { SummaryComponent } from './summary/summary.component';
+import { TestSettingsComponent } from './test-settings/test-settings.component';
+import { DialogModule } from 'primeng/dialog';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { FormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [
@@ -29,6 +35,7 @@ import { SummaryComponent } from './summary/summary.component';
     CreateTestComponent,
     AddUserComponent,
     SummaryComponent,
+    TestSettingsComponent,
   ],
   imports: [
     CommonModule,
@@ -48,6 +55,11 @@ import { SummaryComponent } from './summary/summary.component';
     AvatarGroupModule,
     CarouselModule,
     ScrollPanelModule,
+    DialogModule,
+    InputSwitchModule,
+    FormsModule,
+    CalendarModule,
+    InputNumberModule,
   ],
 })
 export class DashboardModule {}
