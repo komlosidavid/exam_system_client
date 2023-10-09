@@ -92,7 +92,7 @@
           [closable]="false"
         ></p-messages>
         <app-button
-          [text]="'Create test'"
+          [text]="testCreation ? 'Create test' : 'Save test'"
           [is_disabled]="form.invalid"
           [button_class_type]="'w-full'"
           (click)="onHandleCreateNewTest()"
