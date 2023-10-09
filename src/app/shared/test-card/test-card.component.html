@@ -10,14 +10,21 @@
           [tooltip_text]="'Collaborators'"
           (click)="toggleCollaboratorsSubmenu()"
         ></app-button>
+        <h4 class="m-0">
+          Test opens at:
+          <span class="font-semibold">{{
+            test.opensAt | date : "YYYY.MM.dd HH:mm"
+          }}</span>
+        </h4>
       </div>
       <div>
         <p-avatar
-          
+          icon="pi pi-user"
           styleClass="mr-1"
           shape="circle"
           [style]="{ 'background-color': '#3b82f6ff', color: '#fff' }"
         ></p-avatar>
+        <span class="font-semibold">{{ test.creator.fullName }}</span>
       </div>
     </div>
   </ng-template>
@@ -56,7 +63,8 @@
         [button_class_type]="
           'p-button-rounded p-button-secondary p-button-text'
         "
-        [menu_items]="menu_items"
+        [text]="'Edit test'"
+        (click)="onHandleNavigateToEditTest(test.id!)"
       ></app-button>
       <div>
         <app-button
