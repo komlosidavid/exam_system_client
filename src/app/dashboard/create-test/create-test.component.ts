@@ -220,7 +220,6 @@ export class CreateTestComponent implements AfterViewChecked {
 
   handleTestSettingsChange(settings: TestSettings) {
     this.form.get('opensAt')?.setValue(new Date(settings.opensAt));
-    console.log(this.form.get('opensAt'));
   }
 
   onHandleDeleteQuestion(id: number, index: number): void {
