@@ -23,7 +23,8 @@
               pInputText
               placeholder="Search"
               class="w-full"
-              [disabled]="handleFilterDisabling()"
+              [(ngModel)]="searchTerm"
+              (ngModelChange)="onHandleSearchForTest()"
             />
           </ng-template>
         </p-menubar>
