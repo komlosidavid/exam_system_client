@@ -2,13 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { TestRoutingModule } from './test-routing.module';
-import { QuestionComponent } from './question/question.component';
 
-import { AnswerComponent } from './answer/answer.component';
 import { TestComponent } from './test/test.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [QuestionComponent, AnswerComponent, TestComponent],
-  imports: [CommonModule, TestRoutingModule],
+  declarations: [TestComponent],
+  imports: [
+    CommonModule,
+    TestRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    SharedModule
+  ],
 })
 export class TestModule {}
