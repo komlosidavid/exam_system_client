@@ -27,6 +27,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { FormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { EditTestComponent } from './edit-test/edit-test.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     AddUserComponent,
     SummaryComponent,
     TestSettingsComponent,
+    EditTestComponent,
   ],
   imports: [
     CommonModule,
