@@ -1,0 +1,114 @@
+<div class="p-5 flex justify-content-between flex-wrap">
+  <div *ngIf="addUserPanelOpen" class="w-full p-5 flex flex-column gap-3">
+    <app-add-user
+      *ngIf="addCollaboratorsPanel"
+      [role]="'teacher'"
+      [selectedUsers]="selectedCollaborators"
+      (selectedUsersEmitter)="addToCollaborators($event)"
+    ></app-add-user>
+    <app-add-user
+      *ngIf="addStudentsPanel"
+      [role]="'student'"
+      [selectedUsers]="selectedStudents"
+      (selectedUsersEmitter)="addToStudents($event)"
+    ></app-add-user>
+    <div class="w-full flex justify-content-center">
+      <i
+        class="pi pi-angle-up cursor-pointer"
+        (click)="closeAddUserPanel()"
+      ></i>
+    </div>
+  </div>
+  <div class="w-8 mx-auto">
+    <div class="w-full flex mx-auto p-3 justify-content-between">
+      <div class="flex gap-3">
+        <app-button
+          [button_has_icon]="true"
+          [btn_icon_class]="'pi pi-users'"
+          [text]="'Add collaborators'"
+          (click)="openAddUserPanel('collaborators')"
+        ></app-button>
+        <app-button
+          [button_has_icon]="true"
+          [btn_icon_class]="'pi pi-users'"
+          [text]="'Add students'"
+          (click)="openAddUserPanel('students')"
+        ></app-button>
+      </div>
+      <app-button
+        [button_has_icon]="true"
+        [btn_icon_class]="'pi pi-cog'"
+        [button_class_type]="'p-button-secondary'"
+        [text]="'Change test details'"
+        (click)="onHandlechangeTestDetails()"
+      ></app-button>
+    </div>
+    <form [formGroup]="form">
+      <p-messages
+        [(value)]="testErrorMessage"
+        [enableService]="true"
+        *ngIf="questions.length < 1"
+        [closable]="false"
+      ></p-messages>
+      <div class="p-2">
+        <div class="w-full flex gap-3">
+          <h1 class="m-0" *ngIf="!isEditTitle">
+            {{
+              form.controls["subject"].value.length > 0
+                ? form.controls["subject"].value
+                : "Subject of my new test"
+            }}
+          </h1>
+          <input
+            *ngIf="isEditTitle"
+            type="text"
+            class="w-4"
+            maxlength="50"
+            pInputText
+            formControlName="subject"
+            [value]="
+              form.controls['subject'].value.length > 0
+                ? form.controls['subject'].value
+                : ''
+            "
+            onchange=""
+          />
+          <app-button
+            [button_has_icon]="true"
+            [btn_icon_class]="'pi pi-pencil'"
+            [button_class_type]="'p-button-secondary'"
+            [is_button_link]="true"
+            (click)="onHandleEditTitle()"
+          ></app-button>
+        </div>
+      </div>
+      <div class="p-3 flex flex-column gap-3">
+        <app-question
+            id="question-{{ i }}"
+            *ngFor="let question of questions.controls; let i = index"
+            [questionGroup]="$any(question)"
+            (deleteQuestion)="onHandleDeleteQuestion($event, i)"
+          ></app-question>
+        <p-splitButton
+          label="Add question"
+          styleClass="mt-3 p-button-secondary border-1"
+          icon="pi pi-plus"
+          [model]="items"
+          (onClick)="addNewQuestion('one_answer')"
+        ></p-splitButton>
+      </div>
+    </form>
+  </div>
+  <app-summary
+    [selectedCollaborators]="selectedCollaborators"
+    [selectedStudents]="selectedStudents"
+    [questions]="questions"
+    [form]="form"
+    [testCreation]="false"
+  ></app-summary>
+</div>
+<app-test-settings
+  [isOpen]="isChangeTestDetailsModalOpen"
+  (settings)="handleTestSettingsChange($event)"
+  (toggleIsOpen)="onHandlechangeTestDetails()"
+></app-test-settings>
