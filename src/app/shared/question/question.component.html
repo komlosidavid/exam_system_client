@@ -62,7 +62,8 @@
       [answerGroup]="$any(answer)"
       (onHandleMakeAnswerCorrectnessFalse)="makeAnswersIncorrect()"
       (deleteAnswer)="onHandleDeleteAnswer($event, i)"
-    ></app-answer
+    >
+    {{ i }}</app-answer
   ></ng-container>
 
   <app-button
