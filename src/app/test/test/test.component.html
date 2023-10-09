@@ -1,0 +1,29 @@
+<div class="p-5 flex justify-content-between flex-wrap">
+  <div class="w-8 mx-auto">
+    <form>
+      <div class="p-2">
+        <div class="w-full flex gap-3">
+          <h1 class="m-0" >
+            {{
+              test.subject
+            }}
+          </h1>
+        </div>
+      </div>
+      <div class="p-3 flex flex-column gap-3">
+        <app-question
+            id="question-{{ i }}"
+            *ngFor="let question of questions.controls; let i = index"
+            [questionGroup]="$any(question)"
+          ></app-question>
+      </div>
+    </form>
+  </div>
+  <!-- <app-summary
+    [selectedCollaborators]="selectedCollaborators"
+    [selectedStudents]="selectedStudents"
+    [questions]="questions"
+    [form]="form"
+    [testCreation]="true"
+  ></app-summary> -->
+</div>
