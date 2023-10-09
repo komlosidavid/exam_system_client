@@ -9,7 +9,7 @@ import { User } from 'src/app/models/user.model';
   templateUrl: './test-card.component.html',
   styleUrls: ['./test-card.component.css'],
 })
-export class TestCardComponent implements OnInit {
+export class TestCardComponent {
   is_submenu_open: boolean = false;
   dropdown_open: boolean = false;
 
@@ -19,20 +19,6 @@ export class TestCardComponent implements OnInit {
   test!: Test;
 
   constructor(private router: Router) {}
-
-  ngOnInit(): void {
-    this.menu_items = [
-      {
-        label: 'Settings',
-        items: [
-          {
-            label: 'Edit test',
-            icon: 'pi pi-file-edit',
-          },
-        ],
-      },
-    ];
-  }
 
   toggleCollaboratorsSubmenu(): void {
     this.is_submenu_open = !this.is_submenu_open;
@@ -47,7 +33,11 @@ export class TestCardComponent implements OnInit {
     return '';
   }
 
+  onHandleNavigateToEditTest(id: string) {
+    this.router.navigateByUrl('edit/' + id);
+  }
+
   onHandleNavigateToTest(test: Test): void {
-    this.router.navigate(['/test', { data: JSON.stringify(test) }]);
+    this.router.navigateByUrl('test/' + test.id);
   }
 }
