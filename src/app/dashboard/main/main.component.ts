@@ -16,6 +16,7 @@ export class MainComponent implements OnInit {
   tests!: Array<Test> | null;
   menubarItems!: MenuItem[] | undefined;
   selectedFilter: string = 'All';
+  searchTerm!: string;
 
   constructor(private service: DashboardService, private router: Router) {}
 
@@ -53,7 +54,40 @@ export class MainComponent implements OnInit {
         disabled: this.handleFilterDisabling(),
         items: [
           {
-            label: 'By date',
+            label: 'Date',
+            icon: 'pi pi-calendar',
+            items: [
+              {
+                label: 'Ascending',
+                command() {
+                  that.sortTestsByOpeningDateAscending();
+                },
+              },
+              {
+                label: 'Descending',
+                command() {
+                  that.sortTestsByOpeningDateDescending();
+                },
+              },
+            ],
+          },
+          {
+            label: 'Subject',
+            icon: 'pi pi-star',
+            items: [
+              {
+                label: 'Ascending',
+                command() {
+                  that.sortTestsBySubjectNameAscending();
+                },
+              },
+              {
+                label: 'Descending',
+                command() {
+                  that.sortTestsBySubjectNameDescending();
+                },
+              },
+            ],
           },
         ],
       },
@@ -74,11 +108,40 @@ export class MainComponent implements OnInit {
     });
   }
 
+  onHandleSearchForTest() {
+    this.service.getAllTestsBySubjectName(this.searchTerm).subscribe({
+      next: (data) => {
+        this.tests = data;
+      },
+      error: (response) => {},
+    });
+  }
+
   loadMoreData(): void {
     if (!this.isLast) {
       this.page += 1;
       this.loadData(false);
     }
+  }
+
+  private sortTestsByOpeningDateAscending() {
+    this.tests?.sort(
+      (a, b) => new Date(a.opensAt).getTime() - new Date(b.opensAt).getTime()
+    );
+  }
+
+  private sortTestsByOpeningDateDescending() {
+    this.tests?.sort(
+      (a, b) => new Date(b.opensAt).getTime() - new Date(a.opensAt).getTime()
+    );
+  }
+
+  private sortTestsBySubjectNameAscending() {
+    this.tests?.sort((a, b) => a.subject.localeCompare(b.subject));
+  }
+
+  private sortTestsBySubjectNameDescending() {
+    this.tests?.sort((a, b) => b.subject.localeCompare(a.subject));
   }
 
   private handleFilterChange(filter: string) {
@@ -108,9 +171,7 @@ export class MainComponent implements OnInit {
             this.isLast = true;
           }
         },
-        complete: () => {
-          // this.isLoading = false;
-        },
+        complete: () => {},
       });
   }
 
