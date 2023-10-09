@@ -62,7 +62,7 @@ export class AddUserComponent implements OnInit {
   }
 
   searchForUser() {
-    this.service.getAllUsersByContainingFullName(this.searchTerm).subscribe({
+    this.service.getAllUsersByContainingNameAndRole(this.searchTerm, this.role.toUpperCase()).subscribe({
       next: (data) => {
         this.users = data;
       },
