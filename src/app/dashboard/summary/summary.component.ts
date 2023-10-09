@@ -24,6 +24,8 @@ export class SummaryComponent implements OnInit {
   questions!: FormArray;
   @Input()
   form!: FormGroup;
+  @Input()
+  testCreation!: boolean;
 
   testFormErrorMessage!: Message[];
 
@@ -78,8 +80,6 @@ export class SummaryComponent implements OnInit {
         }
       ),
     };
-
-    console.log(payload);
 
     this.service.createTest(payload).subscribe({
       complete: () => {
